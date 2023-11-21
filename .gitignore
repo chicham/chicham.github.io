@@ -202,3 +202,5 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/python,-a,jekyll,-a,jupyternotebooks,-a,direnv
 
 **/.quarto
+
+/.quarto/
