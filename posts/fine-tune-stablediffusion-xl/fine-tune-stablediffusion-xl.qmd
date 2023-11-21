@@ -1,0 +1,19 @@
+---
+title: "Fine tuning Stable Diffusion XL"
+format:
+  html:
+    code-fold: true
+  ipynb: default
+jupyter: python3
+draft : true
+---
+
+# Finetuning a Stable Diffusion XL model
+[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/fine-tune-stablediffusion-xl/fine-tune-stablediffusion-xl.ipnb){fig-align="left"}
+
+
+## Links
+- https://arxiv.org/abs/2108.01073
+- https://stability.ai/stable-diffusion
+- https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
+- https://github.com/Stability-AI/generative-models
