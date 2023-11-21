@@ -1,0 +1,22 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/chicham
+    - text:  "{{< ai google-scholar >}} Google Scholar"
+      href: https://scholar.google.fr/citations?user=g5MloHAAAAAJ&hl
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/hrandria
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/chicham
+---
+
+Hi 👋, My name is Hicham Randrianarivo and I am a Senior Research Engineer at Huawei's Amesterdam Resarch Center. Previously I was team lead Image Search at Qwant in the Paris office. I talk about my interests about python software engineering, deep learning and computer vision.
+
+You can find my full resume [here](_files/www/cv_en.pdf)

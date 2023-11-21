@@ -1,0 +1,27 @@
+project:
+  type: website
+website:
+  title: "Hicham Randrianarivo"
+  site-url: https://chicham.github.io
+  description: "Hicham Randrianarivo personal Blog"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/chicham
+      - icon: twitter
+        href: https://twitter.com/chicham
+      - icon: rss
+        href: index.xml
+  twitter-card:
+    image: thumbnail_blog.png
+    card-style: summary_large_image
+    creator: "@chicham"
+format:
+  html:
+    theme: darkly
+    css: styles.css
+    resources:
+      - _files
+execute:
+  freeze: auto
