@@ -1,0 +1,11 @@
+{
+  "hash": "6536cfdcf654bc6fb35432718fa6af12",
+  "result": {
+    "markdown": "---\ntitle: Fine tuning Stable Diffusion XL\nformat:\n  html:\n    code-fold: true\n  ipynb: default\n---\n\n# Finetuning a Stable Diffusion XL model\n\n::: {.cell execution_count=1}\n``` {.python .cell-code}\nprint(\"test\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\ntest\n```\n:::\n:::\n\n\n",
+    "supporting": [
+      "post_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

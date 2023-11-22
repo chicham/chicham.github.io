@@ -4,7 +4,9 @@ format:
   html:
     code-fold: true
   ipynb: default
-jupyter: python3
+execute:
+  echo: false
+  output: true
 draft : true
 ---
 

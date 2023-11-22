@@ -25,3 +25,4 @@ format:
       - _files
 execute:
   freeze: auto
+  cache: true

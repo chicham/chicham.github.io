@@ -1,0 +1,10 @@
+{
+  "hash": "9c92619736ade91d80f1578d6e038517",
+  "result": {
+    "markdown": "---\ntitle: Fine tuning Stable Diffusion XL\nformat:\n  html:\n    code-fold: true\n  ipynb: default\n---\n\n# Finetuning a Stable Diffusion XL model\n\n::: {#e000d417 .cell execution_count=1}\n``` {.python .cell-code}\nprint(\"test\")\n```\n\n::: {.cell-output .cell-output-stdout}\n```\ntest\n```\n:::\n:::\n\n\n---\njupyter:\n  kernelspec:\n    display_name: Python 3 (ipykernel)\n    language: python\n    name: python3\n---\n",
+    "supporting": [
+      "post_files/figure-ipynb"
+    ],
+    "filters": []
+  }
+}
