@@ -6,13 +6,12 @@ format:
   ipynb: default
 execute:
   eval: false
-  echo: true
-  output: false
+  echo: fenced
 draft : true
 ---
 
 # Sharding with jax
-[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/sharding-with-jax/sharding_jax.ipnb){fig-align="left"}
+[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/gh-pages/posts/sharding-with-jax/sharding_jax.ipynb)
 
 ## Links
 
