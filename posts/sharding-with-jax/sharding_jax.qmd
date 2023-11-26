@@ -4,6 +4,9 @@ format:
   html:
     code-fold: true
   ipynb: default
+execute:
+  eval: false
+  echo: true
 draft : true
 jupyter: python3
 ---
@@ -23,8 +26,7 @@ jupyter: python3
 - Generate random data cube
 
 ```{python}
-
-from jax.random import PRNGKe
+from jax.random import PRNGKey
 import jax.numpy as jnp
 
 import keras_core as K
@@ -70,8 +72,6 @@ model.compile(
     optimizer=K.optimizers.Adam(0.001),
     metrics=["accuracy"]
 )
-
-
 ```
 
 ## Methods
@@ -79,7 +79,6 @@ model.compile(
 ### Baseline
 
 ```{python}
-
 baseline_logs = "logs/baseline/" + datetime.now().strftime("%Y%m%d-%H%M%S")
 
 baseline_callback = K.callbacks.TensorBoard(
@@ -94,8 +93,8 @@ model.fit(
   y_train,
   epochs=2,
   validation_split=0.20,
-  callbacks = [baseline_callback])
-
+  callbacks = [baseline_callback]
+)
 ```
 
 - Data parallelism
