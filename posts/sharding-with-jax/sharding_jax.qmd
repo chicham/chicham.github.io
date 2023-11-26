@@ -4,10 +4,8 @@ format:
   html:
     code-fold: true
   ipynb: default
-execute:
-  eval: false
-  echo: true
 draft : true
+jupyter: python3
 ---
 
 # Sharding with jax
@@ -25,6 +23,7 @@ draft : true
 - Generate random data cube
 
 ```{python}
+
 from jax.random import PRNGKe
 import jax.numpy as jnp
 
@@ -78,7 +77,9 @@ model.compile(
 ## Methods
 
 ### Baseline
+
 ```{python}
+
 baseline_logs = "logs/baseline/" + datetime.now().strftime("%Y%m%d-%H%M%S")
 
 baseline_callback = K.callbacks.TensorBoard(
