@@ -204,3 +204,4 @@ pyrightconfig.json
 .quarto/
 
 /.quarto/
+**/.jupyter-cache
