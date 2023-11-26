@@ -8,7 +8,7 @@
 
 <meta name="author" content="Hicham Randrianarivo">
 
-<title>Hicham Randrianarivo - Fine tuning Stable Diffusion XL</title>
+<title>Hicham Randrianarivo - Sharding with jax</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,8 +63,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Hicham Randrianarivo - Fine tuning Stable Diffusion XL">
-<meta name="twitter:image" content="https://chicham.github.io/posts/fine-tune-stablediffusion-xl/thumbnail_blog.png">
+<meta name="twitter:title" content="Hicham Randrianarivo - Sharding with jax">
+<meta name="twitter:image" content="https://chicham.github.io/posts/sharding-with-jax/thumbnail_blog.png">
 <meta name="twitter:creator" content="@chicham">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -121,19 +121,24 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#finetuning-a-stable-diffusion-xl-model" id="toc-finetuning-a-stable-diffusion-xl-model" class="nav-link active" data-scroll-target="#finetuning-a-stable-diffusion-xl-model">Finetuning a Stable Diffusion XL model</a>
+  <li><a href="#sharding-with-jax" id="toc-sharding-with-jax" class="nav-link active" data-scroll-target="#sharding-with-jax">Sharding with jax</a>
   <ul class="collapse">
   <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
+  <li><a href="#pre-requisites" id="toc-pre-requisites" class="nav-link" data-scroll-target="#pre-requisites">Pre-requisites</a></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#baseline" id="toc-baseline" class="nav-link" data-scroll-target="#baseline">Baseline</a></li>
+  </ul></li>
   </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="fine-tune-stablediffusion-xl.ipynb" download="fine-tune-stablediffusion-xl.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="sharding_jax.ipynb" download="sharding_jax.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Fine tuning Stable Diffusion XL</h1>
+<h1 class="title">Sharding with jax</h1>
 </div>
 
 
@@ -154,23 +159,63 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="finetuning-a-stable-diffusion-xl-model" class="level1">
-<h1>Finetuning a Stable Diffusion XL model</h1>
+<section id="sharding-with-jax" class="level1">
+<h1>Sharding with jax</h1>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/fine-tune-stablediffusion-xl/fine-tune-stablediffusion-xl.ipnb" data-fig-align="left"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p><a href="https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/sharding_jax/sharding_jax.ipnb" data-fig-align="left"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li>https://stability.ai/stable-diffusion</li>
-<li>https://arxiv.org/abs/2108.01073</li>
-<li>https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0</li>
-<li>https://github.com/Stability-AI/generative-models</li>
+<li><a href="https://sites.google.com/view/icml-2022-big-model/home">Tutorial ICML 2022</a></li>
+<li><a href="https://jax.readthedocs.io/en/latest/notebooks/Distributed_arrays_and_automatic_parallelization.html">Distributed arrays and automatic parallelization</a></li>
+<li><a href="Big vision">https://github.com/google-research/big_vision</a> the idea of the sharding class</li>
+</ul>
+</section>
+<section id="pre-requisites" class="level2">
+<h2 class="anchored" data-anchor-id="pre-requisites">Pre-requisites</h2>
+<ul>
+<li>Train a 8 layers model</li>
+<li>Generate random data cube</li>
+</ul>
+</section>
+<section id="methods" class="level2">
+<h2 class="anchored" data-anchor-id="methods">Methods</h2>
+<section id="baseline" class="level3">
+<h3 class="anchored" data-anchor-id="baseline">Baseline</h3>
+<ul>
+<li>Data parallelism
+<ul>
+<li>Data parallelism with all reduce</li>
+</ul></li>
+<li>Model Parallelism
+<ul>
+<li>Device placement
+<ul>
+<li>issue: each modules must wait for the computation of the previous one</li>
+<li>Micro batches
+<ul>
+<li>GPipe</li>
+<li>1F1B</li>
+<li>Interleaved 1F1B (megatron)
+<ul>
+<li>Split layers between multiple devices</li>
+</ul></li>
+</ul></li>
+<li>Async pipelines (won’t cover this)</li>
+</ul></li>
+<li>Split parameters ( intra-op parallelism)
+<ul>
+<li>Megatron-LM</li>
+<li>ZeRO</li>
+</ul></li>
+</ul></li>
 </ul>
 
 
+</section>
 </section>
 </section>
 

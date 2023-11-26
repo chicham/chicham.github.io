@@ -8,7 +8,7 @@
 
 <meta name="author" content="Hicham Randrianarivo">
 
-<title>Hicham Randrianarivo - Fine tuning Stable Diffusion XL</title>
+<title>Hicham Randrianarivo - Fine tuning Stable Diffusion with LoRA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,8 +63,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta name="twitter:title" content="Hicham Randrianarivo - Fine tuning Stable Diffusion XL">
-<meta name="twitter:image" content="https://chicham.github.io/posts/fine-tune-stablediffusion-xl/thumbnail_blog.png">
+<meta name="twitter:title" content="Hicham Randrianarivo - Fine tuning Stable Diffusion with LoRA">
+<meta name="twitter:image" content="https://chicham.github.io/posts/fine-tune-stablediffusion-lora/thumbnail_blog.png">
 <meta name="twitter:creator" content="@chicham">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -121,19 +121,19 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#finetuning-a-stable-diffusion-xl-model" id="toc-finetuning-a-stable-diffusion-xl-model" class="nav-link active" data-scroll-target="#finetuning-a-stable-diffusion-xl-model">Finetuning a Stable Diffusion XL model</a>
+  <li><a href="#finetuning-a-stable-diffusion-model" id="toc-finetuning-a-stable-diffusion-model" class="nav-link active" data-scroll-target="#finetuning-a-stable-diffusion-model">Finetuning a Stable Diffusion model</a>
   <ul class="collapse">
   <li><a href="#links" id="toc-links" class="nav-link" data-scroll-target="#links">Links</a></li>
   </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="fine-tune-stablediffusion-xl.ipynb" download="fine-tune-stablediffusion-xl.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="fine-tune-stablediffusion-lora.ipynb" download="fine-tune-stablediffusion-lora.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Fine tuning Stable Diffusion XL</h1>
+<h1 class="title">Fine tuning Stable Diffusion with LoRA</h1>
 </div>
 
 
@@ -154,19 +154,19 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="finetuning-a-stable-diffusion-xl-model" class="level1">
-<h1>Finetuning a Stable Diffusion XL model</h1>
+<section id="finetuning-a-stable-diffusion-model" class="level1">
+<h1>Finetuning a Stable Diffusion model</h1>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/fine-tune-stablediffusion-xl/fine-tune-stablediffusion-xl.ipnb" data-fig-align="left"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p><a href="https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/fine-tune-stablediffusion-lora/fine-tune-stablediffusion-lora.ipnb" data-fig-align="left"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
 </figure>
 </div>
 <section id="links" class="level2">
 <h2 class="anchored" data-anchor-id="links">Links</h2>
 <ul>
-<li>https://stability.ai/stable-diffusion</li>
+<li>https://arxiv.org/pdf/2112.10752.pdf</li>
 <li>https://arxiv.org/abs/2108.01073</li>
-<li>https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0</li>
+<li>https://stability.ai/stable-diffusion</li>
 <li>https://github.com/Stability-AI/generative-models</li>
 </ul>
 
