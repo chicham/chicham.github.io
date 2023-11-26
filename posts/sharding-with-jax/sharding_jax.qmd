@@ -26,6 +26,7 @@ jupyter: python3
 - Generate random data cube
 
 ```{python}
+# !pip install -r https://raw.githubusercontent.com/chicham/chicham.github.io/main/posts/sharding-with-jax/requirements.txt
 from jax.random import PRNGKey
 import jax.numpy as jnp
 
