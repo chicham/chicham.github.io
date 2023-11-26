@@ -27,11 +27,17 @@ jupyter: python3
 
 ```{python}
 # !pip install -r https://raw.githubusercontent.com/chicham/chicham.github.io/main/posts/sharding-with-jax/requirements.txt
+```
+
+```{python}
+import os
 from jax.random import PRNGKey
 import jax.numpy as jnp
 
 import keras_core as K
 import datetime
+
+os.environ["KERAS_BACKEND"] = "jax"
 
 
 N_TRAIN = 8*2**(10+4)
