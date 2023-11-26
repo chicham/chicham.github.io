@@ -1,0 +1,10 @@
+{
+  "hash": "fc8c5d499a4df3bd3859d9417067c42d",
+  "result": {
+    "markdown": "---\ntitle: \"Sharding with jax\"\nformat:\n  html:\n    code-fold: true\n  ipynb: default\nexecute:\n  eval: false\n  echo: false\n  output: true\ndraft : true\n---\n\n# Sharding with jax\n[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/sharding_jax/sharding_jax.ipnb){fig-align=\"left\"}\n\n## Links\n\n- [Tutorial ICML 2022](https://sites.google.com/view/icml-2022-big-model/home)\n- [Distributed arrays and automatic parallelization](https://jax.readthedocs.io/en/latest/notebooks/Distributed_arrays_and_automatic_parallelization.html)\n- [https://github.com/google-research/big_vision](Big vision) the idea of the sharding class\n\n## Pre-requisites\n\n- Train a 8 layers model\n- Generate random data cube\n\n\n\n## Methods\n\n### Baseline\n\n\n\n- Data parallelism\n  - Data parallelism with all reduce\n- Model Parallelism\n  - Device placement\n    - issue: each modules must wait for the computation of the previous one\n    - Micro batches\n      - GPipe\n      - 1F1B\n      - Interleaved 1F1B (megatron)\n        - Split layers between multiple devices\n    - Async pipelines (won't cover this)\n  - Split parameters ( intra-op parallelism)\n    - Megatron-LM\n    - ZeRO\n\n---\njupyter:\n  kernelspec:\n    display_name: Python 3 (ipykernel)\n    language: python\n    name: python3\n---\n",
+    "supporting": [
+      "sharding_jax_files/figure-ipynb"
+    ],
+    "filters": []
+  }
+}

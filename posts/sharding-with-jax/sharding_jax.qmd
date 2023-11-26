@@ -1,0 +1,114 @@
+---
+title: "Sharding with jax"
+format:
+  html:
+    code-fold: true
+  ipynb: default
+execute:
+  eval: false
+  echo: false
+  output: true
+draft : true
+---
+
+# Sharding with jax
+[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/sharding_jax/sharding_jax.ipnb){fig-align="left"}
+
+## Links
+
+- [Tutorial ICML 2022](https://sites.google.com/view/icml-2022-big-model/home)
+- [Distributed arrays and automatic parallelization](https://jax.readthedocs.io/en/latest/notebooks/Distributed_arrays_and_automatic_parallelization.html)
+- [https://github.com/google-research/big_vision](Big vision) the idea of the sharding class
+
+## Pre-requisites
+
+- Train a 8 layers model
+- Generate random data cube
+
+```{python}
+from jax.random import PRNGKey
+import jax.numpy as jnp
+
+import keras_core as K
+import datetime
+
+
+N_TRAIN = 8*2**(10+4)
+N_EVAL = 8*2**10
+
+key = PRNGKey(0)
+
+(x_train, y_train), (x_test, y_test) = K.datasets.mnist.load_data()
+# Scale images to the [0, 1] range
+x_train = x_train.astype("float32") / 255
+x_test = x_test.astype("float32") / 255
+# Make sure images have shape (28, 28, 1)
+x_train = jnp.expand_dims(x_train, -1)
+x_test = jnp.expand_dims(x_test, -1)
+
+input_shape = 28, 28, 1
+
+model = K.Sequential(
+  [
+    K.layers.Flatten(input_shape),
+    K.layers.Dense(128, activation="relu"),
+    K.layers.Dense(128, activation="relu"),
+    K.layers.Dropout(rate=.5),
+    K.layers.Dense(128, activation="relu"),
+    K.layers.Dense(128, activation="relu"),
+    K.layers.Dropout(rate=.5),
+    K.layers.Dense(128, activation="relu"),
+    K.layers.Dense(128, activation="relu"),
+    K.layers.Dropout(rate=.5),
+    K.layers.Dense(128, activation="relu"),
+    K.layers.Dense(10, activation="softmax"),
+  ]
+)
+
+model.summary()
+
+model.compile(
+    loss="sparse_categorical_crossentropy",
+    optimizer=K.optimizers.Adam(0.001),
+    metrics=["accuracy"]
+)
+
+
+```
+
+## Methods
+
+### Baseline
+```{python}
+baseline_logs = "logs/baseline/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+
+baseline_callback = K.callbacks.TensorBoard(
+  log_dir = baseline_logs,
+  histogram_freq = 1,
+  profile_batch = '500,520'
+)
+
+
+model.fit(
+  x_train,
+  y_train,
+  epochs=2,
+  validation_split=0.20,
+  callbacks = [baseline_callback])
+
+```
+
+- Data parallelism
+  - Data parallelism with all reduce
+- Model Parallelism
+  - Device placement
+    - issue: each modules must wait for the computation of the previous one
+    - Micro batches
+      - GPipe
+      - 1F1B
+      - Interleaved 1F1B (megatron)
+        - Split layers between multiple devices
+    - Async pipelines (won't cover this)
+  - Split parameters ( intra-op parallelism)
+    - Megatron-LM
+    - ZeRO

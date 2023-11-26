@@ -1,0 +1,21 @@
+---
+title: "Fine tuning Stable Diffusion with LoRA"
+format:
+  html:
+    code-fold: true
+  ipynb: default
+execute:
+  echo: false
+  output: true
+draft : true
+---
+
+# Finetuning a Stable Diffusion model
+[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/fine-tune-stablediffusion-lora/fine-tune-stablediffusion-lora.ipnb){fig-align="left"}
+
+
+## Links
+- https://arxiv.org/pdf/2112.10752.pdf
+- https://arxiv.org/abs/2108.01073
+- https://stability.ai/stable-diffusion
+- https://github.com/Stability-AI/generative-models

@@ -1,0 +1,13 @@
+-f https://storage.googleapis.com/jax-releases/libtpu_releases.html
+jax[tpu,cpu]==0.4.20
+etils[all]
+clu
+tensorflow_datasets
+keras_core
+tensorboard
+tensorboard_plugin_profile
+jupyter-cache
+
+ruff
+ipdb
+quarto

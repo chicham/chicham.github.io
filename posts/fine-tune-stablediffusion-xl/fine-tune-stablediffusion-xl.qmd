@@ -15,7 +15,7 @@ draft : true
 
 
 ## Links
-- https://arxiv.org/abs/2108.01073
 - https://stability.ai/stable-diffusion
+- https://arxiv.org/abs/2108.01073
 - https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 - https://github.com/Stability-AI/generative-models

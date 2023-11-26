@@ -1,0 +1,8 @@
+etils[all]
+jax
+optax
+clu
+keras_core
+ruff
+pytypes
+tensorflow_datasets
