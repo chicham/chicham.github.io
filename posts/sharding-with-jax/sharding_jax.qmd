@@ -6,13 +6,13 @@ format:
   ipynb: default
 execute:
   eval: false
-  echo: false
-  output: true
+  echo: true
+  output: false
 draft : true
 ---
 
 # Sharding with jax
-[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/sharding_jax/sharding_jax.ipnb){fig-align="left"}
+[![](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/chicham/chicham.github.io/blob/master/posts/sharding-with-jax/sharding_jax.ipnb){fig-align="left"}
 
 ## Links
 
@@ -26,7 +26,7 @@ draft : true
 - Generate random data cube
 
 ```{python}
-from jax.random import PRNGKey
+from jax.random import PRNGKe
 import jax.numpy as jnp
 
 import keras_core as K
@@ -43,7 +43,7 @@ key = PRNGKey(0)
 x_train = x_train.astype("float32") / 255
 x_test = x_test.astype("float32") / 255
 # Make sure images have shape (28, 28, 1)
-x_train = jnp.expand_dims(x_train, -1)
+x_train = jnp.expand_dims(x_train, -1
 x_test = jnp.expand_dims(x_test, -1)
 
 input_shape = 28, 28, 1
