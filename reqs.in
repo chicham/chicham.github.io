@@ -1,0 +1,4 @@
+ruff
+ipdb
+quarto
+pre-commit
