@@ -10,8 +10,16 @@ attrs==23.1.0
     # via
     #   jsonschema
     #   referencing
+bleach==6.1.0
+    # via kaggle
+certifi==2023.11.17
+    # via
+    #   kaggle
+    #   requests
 cfgv==3.4.0
     # via pre-commit
+charset-normalizer==3.3.2
+    # via requests
 comm==0.2.0
     # via ipykernel
 debugpy==1.8.0
@@ -32,6 +40,8 @@ filelock==3.13.1
     # via virtualenv
 identify==2.5.32
     # via pre-commit
+idna==3.6
+    # via requests
 ipdb==0.13.13
     # via -r reqs.in
 ipykernel==6.26.0
@@ -57,6 +67,8 @@ jupyter-core==5.5.0
     #   nbclient
     #   nbformat
     #   quarto
+kaggle==1.5.16
+    # via -r reqs.in
 matplotlib-inline==0.1.6
     # via
     #   ipykernel
@@ -94,7 +106,11 @@ pure-eval==0.2.2
 pygments==2.17.2
     # via ipython
 python-dateutil==2.8.2
-    # via jupyter-client
+    # via
+    #   jupyter-client
+    #   kaggle
+python-slugify==8.0.1
+    # via kaggle
 pyyaml==6.0.1
     # via
     #   pre-commit
@@ -109,6 +125,8 @@ referencing==0.31.0
     # via
     #   jsonschema
     #   jsonschema-specifications
+requests==2.31.0
+    # via kaggle
 rpds-py==0.13.1
     # via
     #   jsonschema
@@ -118,15 +136,21 @@ ruff==0.1.6
 six==1.16.0
     # via
     #   asttokens
+    #   bleach
+    #   kaggle
     #   python-dateutil
 stack-data==0.6.3
     # via ipython
+text-unidecode==1.3
+    # via python-slugify
 tomli==2.0.1
     # via ipdb
 tornado==6.3.3
     # via
     #   ipykernel
     #   jupyter-client
+tqdm==4.66.1
+    # via kaggle
 traitlets==5.14.0
     # via
     #   comm
@@ -137,10 +161,16 @@ traitlets==5.14.0
     #   matplotlib-inline
     #   nbclient
     #   nbformat
+urllib3==2.1.0
+    # via
+    #   kaggle
+    #   requests
 virtualenv==20.24.7
     # via pre-commit
 wcwidth==0.2.12
     # via prompt-toolkit
+webencodings==0.5.1
+    # via bleach
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
