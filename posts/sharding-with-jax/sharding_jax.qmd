@@ -50,7 +50,7 @@ key = PRNGKey(0)
 x_train = x_train.astype("float32") / 255
 x_test = x_test.astype("float32") / 255
 # Make sure images have shape (28, 28, 1)
-x_train = jnp.expand_dims(x_train, -1
+x_train = jnp.expand_dims(x_train, -1)
 x_test = jnp.expand_dims(x_test, -1)
 
 input_shape = 28, 28, 1
