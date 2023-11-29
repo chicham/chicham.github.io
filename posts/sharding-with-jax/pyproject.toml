@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shard_with_jax"
+requires-python = ">=3.10"
+dynamic = ["version"]
+
+dependencies =  [
+  "keras_core",
+  "tensorboard",
+  "tensorboard_plugin_profile",
+]
+
+[project.optional-dependencies]
+cpu = [
+  "jax[cpu]==0.4.20"
+]
+
+  tpu = [
+  "jax[tpu]==0.4.20",
+]

@@ -3,3 +3,7 @@ ipdb
 quarto
 pre-commit
 kaggle
+jupytext
+pynvim
+jupyter_client
+pyperclip

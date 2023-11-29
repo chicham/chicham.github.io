@@ -38,13 +38,15 @@ fastjsonschema==2.19.0
     # via nbformat
 filelock==3.13.1
     # via virtualenv
+greenlet==3.0.1
+    # via pynvim
 identify==2.5.32
     # via pre-commit
 idna==3.6
     # via requests
 ipdb==0.13.13
     # via -r reqs.in
-ipykernel==6.26.0
+ipykernel==6.27.1
     # via quarto
 ipython==8.18.1
     # via
@@ -58,6 +60,7 @@ jsonschema-specifications==2023.11.1
     # via jsonschema
 jupyter-client==8.6.0
     # via
+    #   -r reqs.in
     #   ipykernel
     #   nbclient
 jupyter-core==5.5.0
@@ -67,16 +70,29 @@ jupyter-core==5.5.0
     #   nbclient
     #   nbformat
     #   quarto
+jupytext==1.15.2
+    # via -r reqs.in
 kaggle==1.5.16
     # via -r reqs.in
+markdown-it-py==3.0.0
+    # via
+    #   jupytext
+    #   mdit-py-plugins
 matplotlib-inline==0.1.6
     # via
     #   ipykernel
     #   ipython
+mdit-py-plugins==0.4.0
+    # via jupytext
+mdurl==0.1.2
+    # via markdown-it-py
+msgpack==1.0.7
+    # via pynvim
 nbclient==0.9.0
     # via quarto
 nbformat==5.9.2
     # via
+    #   jupytext
     #   nbclient
     #   quarto
 nest-asyncio==1.5.8
@@ -105,6 +121,10 @@ pure-eval==0.2.2
     # via stack-data
 pygments==2.17.2
     # via ipython
+pynvim==0.4.3
+    # via -r reqs.in
+pyperclip==1.8.2
+    # via -r reqs.in
 python-dateutil==2.8.2
     # via
     #   jupyter-client
@@ -113,6 +133,7 @@ python-slugify==8.0.1
     # via kaggle
 pyyaml==6.0.1
     # via
+    #   jupytext
     #   pre-commit
     #   quarto
 pyzmq==25.1.1
@@ -143,6 +164,8 @@ stack-data==0.6.3
     # via ipython
 text-unidecode==1.3
     # via python-slugify
+toml==0.10.2
+    # via jupytext
 tomli==2.0.1
     # via ipdb
 tornado==6.3.3

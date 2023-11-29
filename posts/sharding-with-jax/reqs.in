@@ -1,7 +1,0 @@
--f https://storage.googleapis.com/jax-releases/libtpu_releases.html
--r https://raw.githubusercontent.com/chicham/chicham.github.io/main/requirements.txt
-
-jax[tpu]==0.4.20
-keras_core
-tensorboard
-tensorboard_plugin_profile
