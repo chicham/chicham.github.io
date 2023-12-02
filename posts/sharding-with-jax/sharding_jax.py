@@ -8,7 +8,6 @@
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: -all
-#     formats: qmd,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
@@ -118,6 +117,7 @@ def train_step(state, data):
         metric_variables,
     )
 
+
 logs_dir = Path("logs/").resolve()
 logs_dir.mkdir(exist_ok=True)
 
@@ -138,6 +138,7 @@ state = (
 x_train = x_train[2 * BATCH_SIZE :]
 y_train = y_train[2 * BATCH_SIZE :]
 
+
 def run(state, x_train, y_train):
     acc_loss = 0
     for step in range(0, x_train.shape[0], BATCH_SIZE):
@@ -153,6 +154,7 @@ def run(state, x_train, y_train):
             print(f"Acc: {train_metric.result()}")
             print(f"Loss: {acc_loss / (step + 1)}")
 
+
 # %% [markdown]
 """
 # Experiments
@@ -167,3 +169,8 @@ if not baseline_dir.exists():
         with jax.profiler.trace(tmpdir):
             run(state, x_train, y_train)
         shutil.move(tmpdir, baseline_dir)
+
+# %% [markdown]
+"""
+## Replicated
+"""
