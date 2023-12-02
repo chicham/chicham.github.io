@@ -1,31 +1,31 @@
----
-format:
-  html:
-    code-fold: true
-  ipynb: default
-title: Sharding with jax
-draft: true
-jupyter:
-  jupytext:
-    cell_metadata_filter: '-all'
-    formats: 'qmd,py:percent'
-    main_language: python
-    text_representation:
-      extension: .qmd
-      format_name: quarto
-      format_version: '1.0'
-      jupytext_version: 1.15.2
-  kernelspec:
-    display_name: Python 3
-    language: python
-    name: python3
----
+# ---
+# format:
+#   html:
+#     code-fold: true
+#   ipynb: default
+# title: Sharding with jax
+# draft: true
+# jupyter:
+#   jupytext:
+#     cell_metadata_filter: -all
+#     formats: qmd,py:percent
+#     text_representation:
+#       extension: .py
+#       format_name: percent
+#       format_version: '1.3'
+#       jupytext_version: 1.15.2
+# ---
 
+# %% [markdown]
+"""
 # Pre-requisites: Parallelism for deep learning
+"""
 
+# %% [markdown]
+"""
 # Utils functions
-
-```{python}
+"""
+# %%
 import os
 
 
@@ -152,12 +152,14 @@ def run(state, x_train, y_train):
                 variable.assign(value)
             print(f"Acc: {train_metric.result()}")
             print(f"Loss: {acc_loss / (step + 1)}")
-```
 
+# %% [markdown]
+"""
 # Experiments
 ## Baseline run on 1 device
+"""
 
-```{python}
+# %%
 baseline_dir = logs_dir / "baseline"
 
 if not baseline_dir.exists():
@@ -165,4 +167,3 @@ if not baseline_dir.exists():
         with jax.profiler.trace(tmpdir):
             run(state, x_train, y_train)
         shutil.move(tmpdir, baseline_dir)
-```

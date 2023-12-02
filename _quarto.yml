@@ -23,6 +23,8 @@ format:
     css: styles.css
     resources:
       - _files
+    code-fold: true
+  ipynb: default
 execute:
   freeze: auto
   cache: false
