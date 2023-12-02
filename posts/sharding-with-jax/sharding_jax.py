@@ -8,6 +8,7 @@
 # jupyter:
 #   jupytext:
 #     cell_metadata_filter: -all
+#     formats: ipynb,py:percent
 #     text_representation:
 #       extension: .py
 #       format_name: percent
@@ -25,8 +26,10 @@
 # Utils functions
 """
 # %%
-import os
+# !pip install https://raw.githubusercontent.com/chicham/chicham.github.io/main/posts/sharding-with-jax/requirements-tpu.txt
+# %%
 
+import os
 
 import jax
 from jax import random
