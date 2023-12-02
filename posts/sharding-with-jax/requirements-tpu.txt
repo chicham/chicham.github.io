@@ -8,8 +8,13 @@
 
 absl-py==2.0.0
     # via
-    #   keras-core
+    #   keras
+    #   keras-nightly
+    #   tb-nightly
     #   tensorboard
+    #   tf-nightly
+astunparse==1.6.3
+    # via tf-nightly
 cachetools==5.3.2
     # via google-auth
 certifi==2023.11.17
@@ -21,19 +26,36 @@ charset-normalizer==3.3.2
     #   -c /home/hicham/Work/blog/requirements.txt
     #   requests
 dm-tree==0.1.8
-    # via keras-core
+    # via
+    #   keras
+    #   keras-nightly
+flatbuffers==23.5.26
+    # via tf-nightly
+gast==0.5.4
+    # via tf-nightly
 google-auth==2.23.4
     # via
     #   google-auth-oauthlib
+    #   tb-nightly
     #   tensorboard
 google-auth-oauthlib==1.1.0
-    # via tensorboard
+    # via
+    #   tb-nightly
+    #   tensorboard
+google-pasta==0.2.0
+    # via tf-nightly
 grpcio==1.59.3
-    # via tensorboard
+    # via
+    #   tb-nightly
+    #   tensorboard
+    #   tf-nightly
 gviz-api==1.10.0
     # via tensorboard-plugin-profile
 h5py==3.10.0
-    # via keras-core
+    # via
+    #   keras
+    #   keras-nightly
+    #   tf-nightly
 idna==3.6
     # via
     #   -c /home/hicham/Work/blog/requirements.txt
@@ -44,12 +66,18 @@ jax[tpu]==0.4.20
     #   shard-with-jax (pyproject.toml)
 jaxlib==0.4.20
     # via jax
-keras-core==0.1.7
+keras==3.0.0
     # via shard-with-jax (pyproject.toml)
+keras-nightly==3.0.1.dev2023120203
+    # via tf-nightly
+libclang==16.0.6
+    # via tf-nightly
 libtpu-nightly==0.1.dev20231102
     # via jax
 markdown==3.5.1
-    # via tensorboard
+    # via
+    #   tb-nightly
+    #   tensorboard
 markdown-it-py==3.0.0
     # via
     #   -c /home/hicham/Work/blog/requirements.txt
@@ -64,26 +92,40 @@ ml-dtypes==0.3.1
     # via
     #   jax
     #   jaxlib
+    #   tf-nightly
 namex==0.0.7
-    # via keras-core
+    # via
+    #   keras
+    #   keras-nightly
 numpy==1.26.2
     # via
     #   h5py
     #   jax
     #   jaxlib
-    #   keras-core
+    #   keras
+    #   keras-nightly
     #   ml-dtypes
     #   opt-einsum
     #   scipy
+    #   tb-nightly
     #   tensorboard
+    #   tf-nightly
 oauthlib==3.2.2
     # via requests-oauthlib
 opt-einsum==3.3.0
-    # via jax
+    # via
+    #   jax
+    #   tf-nightly
+packaging==23.2
+    # via
+    #   -c /home/hicham/Work/blog/requirements.txt
+    #   tf-nightly
 protobuf==4.23.4
     # via
+    #   tb-nightly
     #   tensorboard
     #   tensorboard-plugin-profile
+    #   tf-nightly
 pyasn1==0.5.1
     # via
     #   pyasn1-modules
@@ -99,11 +141,14 @@ requests==2.31.0
     #   -c /home/hicham/Work/blog/requirements.txt
     #   jax
     #   requests-oauthlib
+    #   tb-nightly
     #   tensorboard
 requests-oauthlib==1.3.1
     # via google-auth-oauthlib
 rich==13.7.0
-    # via keras-core
+    # via
+    #   keras
+    #   keras-nightly
 rsa==4.9
     # via google-auth
 scipy==1.11.4
@@ -113,23 +158,48 @@ scipy==1.11.4
 six==1.16.0
     # via
     #   -c /home/hicham/Work/blog/requirements.txt
+    #   astunparse
+    #   google-pasta
     #   gviz-api
+    #   tb-nightly
     #   tensorboard
     #   tensorboard-plugin-profile
+    #   tf-nightly
+tb-nightly==2.16.0a20231201
+    # via tf-nightly
 tensorboard==2.15.1
     # via shard-with-jax (pyproject.toml)
 tensorboard-data-server==0.7.2
-    # via tensorboard
+    # via
+    #   tb-nightly
+    #   tensorboard
 tensorboard-plugin-profile==2.14.0
     # via shard-with-jax (pyproject.toml)
+tensorflow-io-gcs-filesystem==0.34.0
+    # via tf-nightly
+termcolor==2.4.0
+    # via tf-nightly
+tf-estimator-nightly==2.14.0.dev2023080308
+    # via tf-nightly
+tf-keras-nightly==2.16.0.dev2023120110
+    # via tb-nightly
+tf-nightly==2.16.0.dev20231130
+    # via shard-with-jax (pyproject.toml)
+typing-extensions==4.8.0
+    # via tf-nightly
 urllib3==2.1.0
     # via
     #   -c /home/hicham/Work/blog/requirements.txt
     #   requests
 werkzeug==3.0.1
     # via
+    #   tb-nightly
     #   tensorboard
     #   tensorboard-plugin-profile
+wheel==0.42.0
+    # via astunparse
+wrapt==1.14.1
+    # via tf-nightly
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
