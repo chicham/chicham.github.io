@@ -6,16 +6,17 @@
       version="2.0">
 <channel>
 <title>Hicham Randrianarivo</title>
-<link>https://chicham.github.io/index.html</link>
+<link>https://chicham.github.io/</link>
 <atom:link href="https://chicham.github.io/index.xml" rel="self" type="application/rss+xml"/>
 <description>Hicham Randrianarivo personal Blog</description>
-<generator>quarto-1.3.450</generator>
+<generator>quarto-1.5.57</generator>
 <lastBuildDate>Mon, 20 Nov 2023 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Post With Code</title>
   <dc:creator>Harlow Malloc</dc:creator>
-  <link>https://chicham.github.io/posts/post-with-code/index.html</link>
+  <link>https://chicham.github.io/posts/post-with-code/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -27,7 +28,7 @@
   <category>news</category>
   <category>code</category>
   <category>analysis</category>
-  <guid>https://chicham.github.io/posts/post-with-code/index.html</guid>
+  <guid>https://chicham.github.io/posts/post-with-code/</guid>
   <pubDate>Mon, 20 Nov 2023 00:00:00 GMT</pubDate>
   <media:content url="https://chicham.github.io/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
 </item>

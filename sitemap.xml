@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://chicham.github.io/posts/post-with-code/index.html</loc>
+    <lastmod>2024-10-30T09:25:19.920Z</lastmod>
+  </url>
+  <url>
     <loc>https://chicham.github.io/about.html</loc>
-    <lastmod>2023-12-02T15:06:33.247Z</lastmod>
+    <lastmod>2024-10-30T09:25:19.916Z</lastmod>
   </url>
   <url>
     <loc>https://chicham.github.io/index.html</loc>
-    <lastmod>2023-12-02T15:06:32.559Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chicham.github.io/posts/post-with-code/index.html</loc>
-    <lastmod>2023-12-02T15:06:34.479Z</lastmod>
+    <lastmod>2024-10-30T09:25:19.916Z</lastmod>
   </url>
 </urlset>
