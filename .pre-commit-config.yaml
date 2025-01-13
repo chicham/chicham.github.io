@@ -18,7 +18,7 @@ repos:
         # -   id: no-commit-to-branch
         #     args: [--branch, main]
   - repo: https://github.com/google/yamlfmt
-    rev: v0.13.0
+    rev: v0.15.0
     hooks:
       - id: yamlfmt
   - repo: https://github.com/markdownlint/markdownlint
