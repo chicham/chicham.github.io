@@ -1,0 +1,76 @@
+---
+title: "Software"
+toc: true
+toc-location: right
+---
+
+## artefactual
+
+**Estimating how likely a language model answer is to be a hallucination.**
+
+[![](https://img.shields.io/github/stars/artefactory/artefactual?style=social)](https://github.com/artefactory/artefactual)
+
+`artefactual` assigns an already-generated LLM answer a probability of being a
+hallucination. It reads the answer together with the token probabilities returned
+alongside it, and needs nothing else from the model — no reference text, no second
+generation, no access to weights. Any OpenAI-compatible endpoint that exposes
+`logprobs` can be scored.
+
+[Documentation](https://artefactory.github.io/artefactual/) ·
+[GitHub](https://github.com/artefactory/artefactual) ·
+[Paper — ECIR 2026 (arXiv:2509.04492)](https://arxiv.org/abs/2509.04492) ·
+[Detectors on Hugging Face](https://huggingface.co/chicham)
+
+```python
+from openai import OpenAI
+from artefactual.scoring import wepr
+
+MODEL = "mistralai/Ministral-8B-Instruct-2410"   # the model being scored
+DETECTOR = "chicham/artefactual-wepr-ministral"  # the detector trained for it
+
+client = OpenAI(base_url="https://your-provider.example/v1")
+response = client.chat.completions.create(
+    model=MODEL,
+    messages=[{"role": "user", "content": "Who wrote the Rust book?"}],
+    logprobs=True,
+    top_logprobs=15,
+)
+
+detector = wepr(DETECTOR)
+detector.predict_proba(response)[:, 1]   # P(hallucination) per sequence
+detector.predict_token_proba(response)   # ...and per token
+```
+
+### Try it without an endpoint
+
+The [example notebooks](https://artefactory.github.io/artefactual/examples/) run against
+two checked-in responses — no GPU, API key, or model download required.
+
+```bash
+pip install artefactual
+```
+
+### Published detectors
+
+A detector is trained for one model, so it is named by its own Hugging Face repository
+rather than by the model it scores. All are trained at `k = 15`.
+
+| Model that produced the responses | `epr()` | `wepr()` |
+|---|---|---|
+| `mistralai/Ministral-8B-Instruct-2410` | `chicham/artefactual-epr-ministral` | `chicham/artefactual-wepr-ministral` |
+| `mistralai/Mistral-Small-3.1-24B-Instruct-2503` | `chicham/artefactual-epr-mistral-small` | `chicham/artefactual-wepr-mistral-small` |
+| `tiiuae/Falcon3-10B-Instruct` | `chicham/artefactual-epr-falcon3` | `chicham/artefactual-wepr-falcon3` |
+| `microsoft/phi-4` | `chicham/artefactual-epr-phi4` | `chicham/artefactual-wepr-phi4` |
+
+Both factories also accept a path to a `.skops` file, so a detector you trained yourself
+is named the same way a published one is.
+
+## LEDGER
+
+A benchmark of 4,999 OCR'd corporate annual reports with 31 consolidated financial KPIs
+per company-year, natural-language questions with page-level relevance judgments, and
+market-reaction linkage — built to evaluate retrieval and extraction on genuinely long,
+visually dense documents (median 124 pages, ~126k tokens per report).
+
+[GitHub](https://github.com/artefactory/LEDGER) ·
+[Paper — CIKM 2026 Resource Track (arXiv:2606.13100)](https://arxiv.org/abs/2606.13100)

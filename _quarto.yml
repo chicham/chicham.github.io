@@ -3,27 +3,45 @@ project:
 website:
   title: "Hicham Randrianarivo"
   site-url: https://chicham.github.io
-  description: "Hicham Randrianarivo personal Blog"
+  description: "Hicham Randrianarivo — Principal Research Scientist, Artefact Research Center. LLM reliability, information retrieval, multimodal learning."
   navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: publications.qmd
+        text: Publications
+      - href: software.qmd
+        text: Software
+      - href: blog.qmd
+        text: Blog
+      - href: about.qmd
+        text: About
     right:
-      - about.qmd
       - icon: github
         href: https://github.com/chicham
-      - icon: twitter
-        href: https://twitter.com/chicham
+      - text: "Scholar"
+        href: https://scholar.google.fr/citations?user=g5MloHAAAAAJ&hl
+      - icon: linkedin
+        href: https://linkedin.com/in/hrandria
       - icon: rss
-        href: index.xml
+        href: blog.xml
+  page-footer:
+    center: "© Hicham Randrianarivo — built with [Quarto](https://quarto.org)"
   twitter-card:
     image: thumbnail_blog.png
     card-style: summary_large_image
     creator: "@chicham"
+  open-graph: true
 format:
   html:
-    theme: darkly
+    theme:
+      light: flatly
+      dark: darkly
     css: styles.css
     resources:
       - _files
     code-fold: true
+    code-copy: true
   ipynb: default
 execute:
   freeze: auto

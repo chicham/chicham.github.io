@@ -1,13 +1,35 @@
 ---
-title: "Hicham's blog"
-listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: true
-  filter-ui: true
-  feed: true
-page-layout: full
-title-block-banner: false
+title: "Hicham Randrianarivo"
+subtitle: "Principal Research Scientist, Artefact Research Center · Associate Researcher, MICS — CentraleSupélec"
+image: profile.jpg
+about:
+  template: trestles
+  image-shape: round
+  image-width: 14em
+  links:
+    - icon: github
+      text: GitHub
+      href: https://github.com/chicham
+    - text: "{{< ai google-scholar >}} Google Scholar"
+      href: https://scholar.google.fr/citations?user=g5MloHAAAAAJ&hl
+    - icon: linkedin
+      text: LinkedIn
+      href: https://linkedin.com/in/hrandria
+    - icon: file-earmark-pdf
+      text: CV
+      href: _files/www/cv_en.pdf
+    - icon: envelope
+      text: Email
+      href: mailto:hicham.randrianarivo@gmail.com
 ---
+
+I work on **generative retrieval** — training LLMs to index documents by generating semantic IDs — and on detecting when those pipelines make things up.
+
+Previously Huawei Amsterdam (multimodal retrieval for Petal Search) and Qwant (image search at 400 QPS over 15B documents). PhD from CNAM Paris.
+
+## Selected work
+
+- [**artefactual**](software.qmd) — scores how likely an LLM answer is to be a hallucination, from logprobs alone. ECIR 2026.
+- [**LEDGER**](publications.qmd) — long-context benchmark of 4,999 annual reports for grounded financial retrieval. CIKM 2026, Resource Track.
+
+[CV](_files/www/cv_en.pdf) · [Publications](publications.qmd) · [Software](software.qmd) · [Blog](blog.qmd)
