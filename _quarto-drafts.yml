@@ -1,0 +1,6 @@
+# Profile for local review: render draft posts in full and list them.
+# Use with `quarto preview --profile drafts` (or QUARTO_PROFILE=drafts).
+# The default profile keeps draft-mode: gone, so a published build never
+# emits draft content.
+website:
+  draft-mode: visible

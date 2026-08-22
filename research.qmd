@@ -1,0 +1,55 @@
+---
+title: "Research"
+---
+
+I work on retrieval with large language models: how documents are represented so a
+model can find them, and how to tell when the answer built on top of them is wrong.
+
+## Directions
+
+**Generative retrieval.**
+Instead of comparing a query embedding against an index, the model generates the
+identifier of the document it wants. The index lives in the parameters. This
+removes the separate retrieval structure, and moves the hard problem into how
+identifiers are constructed and decoded.
+
+**Identifier spaces.**
+A document identifier is a discrete token sequence, and the way it is built
+(product quantisation, residual quantisation, hybrids of the two) decides what
+the model can learn to retrieve. I am interested in properties of an identifier
+space that predict downstream retrieval quality *before* training the full model.
+
+**Constrained decoding.**
+Free generation produces identifiers that do not exist. Enforcing structural
+validity during decoding, through logit constraints and attention masking, keeps
+generation inside the index, and raises the question of what syntactic validity
+actually implies about semantic correctness.
+
+**Evaluation and hallucination.**
+Retrieval pipelines fail in ways aggregate metrics hide. Building datasets and
+protocols that quantify hallucination and retrieval failure, rather than reporting
+a single score, is a prerequisite for deploying any of the above.
+
+## Students
+
+**[Alexia Allal](https://fr.linkedin.com/in/alexia-allal)**
+: CIFRE PhD, Artefact and Université d'Angers, since October 2024. Co-supervised
+with Sylvain Lamprier.
+*Indexation Générative de Documents par les Modèles de Langage : Mécanismes,
+Robustesse et Passage à l'Échelle.* How documents are encoded into discrete token
+sequences, which construction choices produce the best retrieval, and which
+training-free properties of an identifier space predict downstream quality.
+
+**Vivien Nicolas**
+: PhD, IRISA / INSA Rennes, since January 2026. Co-supervised with
+[Caio Corro](https://caio-corro.fr/) and Pascale Sébillot. *Constrained generation
+for retrieval*: enforcing structural validity during decoding through logit
+constraints and attention masking, and what syntactic validity implies about
+semantic validity.
+
+## Before
+
+Multimodal and visual retrieval at scale: video search for Petal Search at
+Huawei's Amsterdam Research Center, image search at Qwant, and a PhD at ONERA on
+statistical learning of semantic classes for aerial image interpretation. The
+[CV](_files/www/cv_en.pdf) has the details.

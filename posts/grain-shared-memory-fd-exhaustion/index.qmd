@@ -3,6 +3,7 @@ title: "Too many open files: Grain, shared memory, and the 1024 fd ceiling"
 description: "A 16-worker Grain pipeline dies with Errno 24 — but only when stage timing is on. The fd accounting explains both."
 date: "2026-02-28"
 categories: [jax, grain, data-pipelines, debugging]
+draft: true
 ---
 
 A training job with `grain.mp_prefetch`, 16 workers and `batch_size=128` died on

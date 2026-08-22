@@ -3,6 +3,7 @@ title: "Why your dataloader workers show up on nvidia-smi"
 description: "N×432 MiB of GPU memory held by CPU-only prefetch workers — sometimes. The spawn start method re-runs your entry module, and one top-level line is enough."
 date: "2026-06-22"
 categories: [jax, grain, multiprocessing, gpu, debugging]
+draft: true
 ---
 
 A Grain `mp_prefetch` pipeline with `num_workers=N` behaved three different ways

@@ -3,6 +3,7 @@ title: "JAX gotchas I keep re-learning"
 description: "Silent precision loss, donation that invalidates your JIT cache, remat undone by CSE, and API churn across 0.8/0.9. Short entries, each with the reason it bites."
 date: "2026-02-08"
 categories: [jax, performance, precision, sharding, debugging]
+draft: true
 ---
 
 None of these are bugs in JAX. They are places where the default is reasonable

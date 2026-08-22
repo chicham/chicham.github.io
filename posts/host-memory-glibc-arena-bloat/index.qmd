@@ -3,6 +3,7 @@ title: "Host RAM that never comes back: orphaned workers and glibc arena bloat"
 description: "A training job climbs from 21GB to 58GB of host memory with no plateau. tracemalloc says nothing is leaking. It is right."
 date: "2026-07-19"
 categories: [jax, grain, memory, debugging, infrastructure]
+draft: true
 ---
 
 A training job died with SIGKILL partway through a run: host RAM exhausted. Not
