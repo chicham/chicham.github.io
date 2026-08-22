@@ -3,7 +3,6 @@ title: "nnx.pure(): the missing line in custom optax init_fn"
 description: "A custom optimizer state works fine until you put it inside nnx.scan, then the carry structure stops matching itself. NNX Variable wrappers are the reason."
 date: "2026-03-08"
 categories: [jax, flax, nnx, optax, debugging]
-draft: true
 ---
 
 A custom optax transform with a compound state — a dataclass rather than a plain

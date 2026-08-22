@@ -3,7 +3,6 @@ title: "A megamerge workflow for parallel work in Jujutsu"
 description: "Several agents editing one repo at once. jj has no built-in notion of \"my set of in-flight branches\" — so build one out of an empty merge commit."
 date: "2026-04-16"
 categories: [jujutsu, version-control, tooling, workflow]
-draft: true
 ---
 
 Running several coding agents against one repository at the same time breaks the
