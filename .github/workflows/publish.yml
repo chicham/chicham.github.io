@@ -11,6 +11,25 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      # The LaTeX source in chicham/cv is the source of truth. That repo's
+      # Build CV workflow keeps a rolling `cv-latest` release; pull the current
+      # PDF over the tracked copy so the site never serves a stale CV. The
+      # tracked copy stays the fallback when the token or release is missing.
+      - name: Fetch the latest CV PDF
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.CV_REPO_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "CV_REPO_TOKEN unset; keeping the tracked _files/www/cv_en.pdf"
+            exit 0
+          fi
+          gh release download cv-latest \
+            -R chicham/cv \
+            -p cv_en_research.pdf \
+            -O _files/www/cv_en.pdf --clobber
+
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
       - name: Render and Publish
