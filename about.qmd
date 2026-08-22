@@ -8,22 +8,21 @@ Principal Research Scientist at the [Artefact Research Center](https://www.artef
 
 My full CV is available [as a PDF](_files/www/cv_en.pdf).
 
-I work on LLM-based and generative retrieval — training models to index documents by generating document and semantic IDs — alongside hallucination detection and evaluation protocols for retrieval pipelines.
+I work on LLM-based and generative retrieval: training models to index documents by generating document and semantic IDs, alongside hallucination detection and evaluation protocols for retrieval pipelines.
 
 ## Experience
 
-**Principal Research Scientist** — Artefact Research Center, Paris *(Oct 2024 – present)*
+**Principal Research Scientist**, Artefact Research Center, Paris *(Oct 2024 – present)*
 : Research on [ArGiMi](https://www.artefact.com/news/le-consortium-argimi-remporte-lappel-a-projet-sur-lintelligence-artificielle-generative-lance-par-bpifrance/), a BPI-funded joint program with Giskard, Mistral AI, INA and BnF building deployable LLM retrieval systems and evaluation assets for enterprise search.
 :
-    - Continual pretraining (CPT) of the ArGiMi Mistral 24B model.
     - LLM-based retrieval assets under 8B parameters, balancing quality, latency and cost.
     - Generative retrieval: parametric indexing via document/semantic ID generation, and a unified objective that optimises retrieval and generation together.
     - Evaluation datasets and protocols quantifying hallucination and retrieval failure in LLM pipelines.
     - Maintainer of the open-source [`artefactual`](software.qmd) library.
 
-**Associate Researcher** — MICS Laboratory, CentraleSupélec, Paris-Saclay *(Oct 2024 – present)*
+**Associate Researcher**, MICS Laboratory, CentraleSupélec, Paris-Saclay *(Oct 2024 – present)*
 
-**Senior Research Engineer** — Huawei, Amsterdam *(Aug 2022 – Mar 2024)*
+**Senior Research Engineer**, Huawei, Amsterdam *(Aug 2022 – Mar 2024)*
 : Applied research for Petal Search: multimodal retrieval models and production features.
 :
     - Shipped two models: +22% on video classification, +15% on keyword extraction.
@@ -31,36 +30,42 @@ I work on LLM-based and generative retrieval — training models to index docume
     - Led an AI code assistant project on CodeT5 and CodeLlama, including code search and retrieval.
     - Prototyped multi-view 3D reconstruction for object retrieval.
 
-**Research Engineer** — Qwant, Paris *(Jun 2017 – Aug 2022)*
+**Research Engineer**, Qwant, Paris *(Jun 2017 – Aug 2022)*
 : Image search engine, built and operated end-to-end at 400 QPS over a 15B-document index with 1M updates/day.
 :
     - Content-based image retrieval stack with scalable indexing and multimodal embeddings.
     - Co-developed the SnapEarth satellite image search engine (EarthSignature and EarthSearch modules).
     - Initiated and managed a joint project with Graphcore benchmarking IPU inference for retrieval models.
 
-**PhD Student** — ONERA, the French aerospace lab, Paris *(Sep 2012 – Dec 2016)*
+**PhD Student**, ONERA, the French aerospace lab, Paris *(Sep 2012 – Dec 2016)*
 : Semantic interpretation of aerial images for large-scale retrieval and indexing: statistical learning with mixtures of object detectors, and shape/structural models for superpixel classification.
 
-**Research Intern** — LIP6, Paris 6 *(2012)*
+**Research Intern**, LIP6, Paris 6 *(2012)*
 : Kernel approximation methods enabling linear-time training in high-dimensional spaces for large-scale image classification and retrieval.
 
-**Research Intern** — ETIS, Cergy-Pontoise *(2011)*
+**Research Intern**, ETIS, Cergy-Pontoise *(2011)*
 : Benchmarking machine learning methods for image retrieval.
+
+## Students
+
+**[Alexia Allal](https://fr.linkedin.com/in/alexia-allal)**, CIFRE PhD, Artefact and Université d'Angers, since October 2024, co-supervised with Sylvain Lamprier. DocID spaces for generative retrieval: how documents are encoded into discrete token sequences, which construction choices (PQ, RQ, hybrids) produce the best retrieval, and which training-free properties of an identifier space predict downstream quality without training the full model.
+
+**Vivien Nicolas**, PhD, IRISA / INSA Rennes, since January 2026, co-supervised with [Caio Corro](https://caio-corro.fr/) and Pascale Sébillot. Constrained generation for retrieval: enforcing structural validity during decoding through logit constraints and attention masking, and what syntactic validity implies about semantic validity.
 
 ## Education
 
-**PhD, Computer Science** — Conservatoire National des Arts et Métiers, Paris *(2012 – 2016)*
+**PhD, Computer Science**, Conservatoire National des Arts et Métiers, Paris *(2012 – 2016)*
 : Statistical learning of semantic classes for aerial image interpretation.
 
-**MSc, Computer Vision and Machine Learning** — University of Cergy-Pontoise *(2011 – 2012)*
+**MSc, Computer Vision and Machine Learning**, University of Cergy-Pontoise *(2011 – 2012)*
 : Double degree with the ENSEA engineering programme.
 
-**Engineering degree** — ENSEA, Cergy-Pontoise *(2009 – 2012)*
+**Engineering degree**, ENSEA, Cergy-Pontoise *(2009 – 2012)*
 : Applied Mathematics and Computer Vision.
 
 ## Languages
 
-French (native) · English (proficient)
+French (native), English (proficient)
 
 ## Elsewhere
 

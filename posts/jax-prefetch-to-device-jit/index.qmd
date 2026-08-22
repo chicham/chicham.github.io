@@ -1,0 +1,72 @@
+---
+title: "You don't need prefetch_to_device with jit"
+description: "len(shards) = 16 must equal len(devices) = 1. The fix is to delete the prefetch, not to reshape the batch."
+date: "2026-02-15"
+categories: [jax, flax, grain, data-pipelines]
+draft: true
+---
+
+A training loop ported to `nnx.jit` started failing in the input pipeline:
+
+```
+ValueError: len(shards) = 16 must equal len(devices) = 1
+```
+
+The instinct is to reshape the batch until the numbers agree. That works, and it
+is the wrong fix.
+
+## What prefetch_to_device is actually for
+
+`flax.jax_utils.prefetch_to_device` belongs to the **`pmap` workflow**, where you
+shard data across devices by hand. It expects input shaped
+`[num_devices, per_device_batch, ...]` — the docs describe it as a pytree of
+ndarrays whose first dimension is sharded across devices.
+
+The error is that function doing exactly its job: splitting the leading axis
+across devices, finding 16 shards and one device, and refusing.
+
+Under `jax.jit` or `nnx.jit` there is nothing for it to do. JAX transfers data to
+the device automatically when it enters a JIT-compiled function. Adding a manual
+device-prefetch on top imposes a `pmap`-shaped layout requirement on a pipeline
+that no longer has one.
+
+## The fix
+
+For jit-based training, remove it:
+
+```python
+for batch in iter(dataloader):   # no prefetch_to_device
+    state = train_step(state, batch)
+```
+
+JAX transfers lazily on first use inside the step function.
+
+If you are genuinely on `pmap`, keep it, and make the batch match: shape as
+`[num_devices, per_device_batch, ...]` via Grain's `batch_fn` or a custom
+transform.
+
+## Don't lose the prefetching you did want
+
+Deleting `prefetch_to_device` removes *device-side* prefetch, which jit handles.
+It does not remove the need for **CPU-side** prefetch, which is what actually
+keeps input workers busy while the accelerator computes. That is a separate
+knob:
+
+```python
+ds = grain.ThreadPrefetchIterDataset(ds, prefetch_buffer_size=64)
+```
+
+Two different buffers, easy to conflate because both are called prefetch:
+
+| | Where | Needed under jit? |
+|---|---|---|
+| `prefetch_to_device` | host → device | No — jit does it |
+| `ThreadPrefetchIterDataset` | input pipeline → training loop, on CPU | Yes |
+
+Worth noting while you are in there: Grain's `ShardByJaxProcess` shards across
+*processes*, not devices. It is not the multi-device equivalent of what you just
+deleted, and reaching for it to fill the gap will confuse you further.
+
+## References
+
+- [JAX: distributed data loading](https://docs.jax.dev/en/latest/distributed_data_loading.html)

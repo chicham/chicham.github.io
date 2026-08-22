@@ -1,0 +1,94 @@
+---
+title: "nnx.pure(): the missing line in custom optax init_fn"
+description: "A custom optimizer state works fine until you put it inside nnx.scan, then the carry structure stops matching itself. NNX Variable wrappers are the reason."
+date: "2026-03-08"
+categories: [jax, flax, nnx, optax, debugging]
+draft: true
+---
+
+A custom optax transform with a compound state — a dataclass rather than a plain
+array per parameter — trained fine eagerly and then failed the moment the step
+was wrapped in `nnx.scan`:
+
+```
+TypeError: scan body function carry input and carry output must have the same
+pytree structure -- input component .value is a <custom_dataclass> but output
+is a <flax.nnx.statelib.State>
+```
+
+The carry goes in as your dataclass and comes out as an NNX `State`. Nothing in
+the transform converts between the two, which is the confusing part.
+
+## Where the wrapper comes from
+
+`nnx.Optimizer.__init__` passes `nnx.state(model, wrt)` to `tx.init()`. That
+tree's leaves are not arrays — they are **Variable objects**.
+
+Then, inside a typical `init_fn`:
+
+```python
+def init_fn(params):
+    return jax.tree.map(lambda p: MyCompoundState(...), params)
+```
+
+`jax.tree.map` over a tree of Variables **preserves the Variable wrapper around
+whatever the function returns**. So a compound dataclass comes back as
+`Variable(MyCompoundState(...))`.
+
+From there:
+
+1. `to_opt_state` treats Variables as opaque leaves.
+2. The entire compound value therefore becomes a single
+   `OptVariable(value=MyCompoundState(...))` instead of being traversed into.
+3. `nnx.scan` cannot round-trip a compound value hiding inside one Variable, and
+   reconstructs it as a `State` dict on output.
+
+Hence a carry whose structure does not match itself.
+
+There is a second failure downstream, once the first is fixed. Diagnostic
+wrappers that build zero-gradient trees from Variable-wrapped params break
+against an optimizer state that is now pure arrays:
+
+```
+ValueError: Custom node type mismatch: expected type:
+<class 'keras.src.backend.Variable'>, value: Array(...)
+```
+
+Same cause, opposite direction.
+
+## The fix is one line
+
+Strip the wrappers at the top of every custom `init_fn`:
+
+```python
+def init_fn(params):
+    params = nnx.pure(params)          # <- this
+    return jax.tree.map(lambda p: MyCompoundState(...), params)
+```
+
+`nnx.pure()` is a Python-only tree traversal — no JAX computation, essentially
+free. Apply it anywhere a zero-gradient or reference tree is built from params
+too, not just in `init_fn`.
+
+**Any custom optax transform used with `nnx.Optimizer` should call
+`nnx.pure()` in its `init_fn`.** The bug is invisible until something wants a
+stable pytree structure across a boundary, and `nnx.scan` is usually the first
+thing that does.
+
+## Two dataclass notes, since compound state is the trigger
+
+If part of your state is static — a shape, a group size, a count — it must be
+declared as such, or JAX will try to trace it:
+
+- `flax.struct.dataclass` supports `pytree_node=False` for static fields.
+- `chex.dataclass` has **no equivalent**, so a state carrying static metadata
+  has to move off it.
+- `chex.dataclass(frozen=True)` is still the right choice for a plain immutable
+  container with no static fields.
+
+## Regression test
+
+Worth writing, because the eager path will keep passing without it: build an
+`nnx.Module` plus an `nnx.Optimizer` using the custom transform, and run a step
+through `nnx.scan`. If the carry structure is wrong, that test fails and nothing
+else does.

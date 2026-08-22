@@ -1,0 +1,176 @@
+---
+title: "JAX gotchas I keep re-learning"
+description: "Silent precision loss, donation that invalidates your JIT cache, remat undone by CSE, and API churn across 0.8/0.9. Short entries, each with the reason it bites."
+date: "2026-02-08"
+categories: [jax, performance, precision, sharding, debugging]
+draft: true
+---
+
+None of these are bugs in JAX. They are places where the default is reasonable
+and quietly wrong for large-scale training, or where something that looks like
+one concept is really two. Collected over a year of training runs; grouped
+rather than ranked.
+
+## Precision
+
+**bfloat16 bias correction rounds to 1.0, then you divide by zero.**
+`jnp.power(decay, t)` in bf16 saturates for large `t`. The Adam-style correction
+`1 - beta**t` becomes exactly `0`, and the division that follows produces `inf`
+or `nan` thousands of steps into a run that looked fine.
+
+```python
+# BAD: overflows in bf16
+correction = 1 - jnp.power(beta, step)
+
+# GOOD: compute in f32, cast the result
+correction = 1 - jnp.power(beta.astype(jnp.float32), step)
+result = (value / correction).astype(jnp.bfloat16)
+```
+
+The general rule: scalars that feed a division get computed in f32 regardless of
+the model dtype. They cost nothing and they are exactly where saturation hurts.
+
+**Default GPU matmul is TF32.** You lose mantissa bits with no warning and no
+error. If precision matters — and it matters more than you think when you are
+comparing two runs — set `jax_default_matmul_precision` explicitly rather than
+inheriting the default.
+
+**`preferred_element_type` must not be narrower than the inputs.** In
+`jnp.einsum` and `jax.lax.dot_general`, asking for an accumulation type narrower
+than what you fed in is accepted and silently degrades the result. Cast
+gradients explicitly when you need them narrow:
+
+```python
+grads = jax.tree.map(lambda g: g.astype(jnp.bfloat16), grads)
+```
+
+## Memory
+
+**Buffer donation keys the JIT cache.** Donating an argument lets XLA reuse its
+memory for the output — essential in a training loop where state is updated
+every step:
+
+```python
+@jax.jit(donate_argnums=(0,))
+def train_step(state, batch):
+    ...
+    return new_state, metrics
+```
+
+Two things follow that are easy to miss. First, **the compilation cache is keyed
+on the donation pattern**, so two call sites donating different arguments compile
+separately — a surprise if you are counting compilations. Second, only donate
+arguments whose memory layout matches the output, and never donate something you
+still need afterwards: that is undefined behaviour, not an error.
+
+**CSE can undo your rematerialization.** Common subexpression elimination will
+happily notice that the recomputed forward activation is the same expression as
+the original and share it — which is precisely what you asked remat *not* to do.
+Use `prevent_cse=True` in `jax.checkpoint`, except in two cases where it is
+wrong: under `jax.lax.scan` over layers, which handles this itself, and for GPU
+gradient accumulation, which needs the CSE.
+
+**Compile before you train, and read the memory analysis.** You can find out
+whether a configuration fits without waiting for it to OOM:
+
+```python
+compiled = p_train_step.lower(state, shaped_batch, rng).compile()
+stats = compiled.memory_analysis()
+print(f"peak temp: {stats.temp_size_in_bytes / 1e9:.1f} GB")
+print(f"output:    {stats.output_size_in_bytes / 1e9:.1f} GB")
+print(f"arguments: {stats.argument_size_in_bytes / 1e9:.1f} GB")
+```
+
+**Host offloading exists and is underused.** Optimizer state can live in host
+DRAM and come back to HBM only for the update, via `with_memory_kind("device")`
+and `with_memory_kind("pinned_host")`. On TPU the same mechanism places arrays in
+VMEM rather than HBM. Worth reaching for before shrinking the model.
+
+## Sharding
+
+**Dimensions must divide the mesh axis evenly** or you get `IndivisibleError`.
+Pad rather than reshaping around it.
+
+**Accidentally replicated parameters waste HBM silently.** Nothing warns you that
+a parameter you meant to shard is replicated across every device. Assert on
+shardings rather than trusting the propagation.
+
+**Multi-process: check `sharding.is_fully_addressable` before `device_put`.**
+The failure otherwise is not obviously about addressability.
+
+**`devices_indices_map()` is cached, at 4096 entries.** Relevant only if you are
+generating shardings dynamically, at which point it is very relevant.
+
+## PRNG
+
+**`jax_threefry_partitionable` (default `True`) makes PRNG shard automatically.**
+Turning it off introduces cross-device communication you did not ask for. If
+someone disabled it to chase a reproducibility issue, that is worth revisiting.
+
+**`unsafe_rbg` is faster on TPU and not bitwise reproducible across mesh
+layouts.** Fine for throughput experiments; not fine for anything you intend to
+compare against a previous run on a different topology.
+
+## Gradient accumulation
+
+**Do not normalise the loss inside the accumulation loop.** Dividing by the
+accumulation count per micro-batch prevents XLA from hoisting the all-reduce out
+of the scan, and you pay for a collective per micro-step. Normalise once, after.
+
+## Metrics
+
+**CLU metrics do not force a per-step device→host sync**, provided you use them
+as intended. `single_from_model_output` builds a struct of on-device arrays,
+`merge()` accumulates with `jnp` ops and stays on-device, and only `.compute()`
+materialises. Call `.compute()` at log intervals, not every step, and the
+hand-rolled buffered-loss pattern becomes unnecessary.
+
+## API churn worth knowing about
+
+Roughly in version order, because these produce confusing errors when you follow
+an older example:
+
+- **`pmap` is deprecated** — migrate to `shard_map`. Note that `shard_map` is
+  rank-*preserving* while `pmap` was rank-*reducing*; the shapes in your body
+  function change.
+- **JAX 0.8.0**: `shard_map`'s `auto` parameter was removed, so no nesting.
+- **JAX 0.8.1+**: the default Pallas GPU backend became Mosaic GPU.
+- **JAX 0.9.0**: `jax.make_mesh` defaults `axis_types` to `AxisType.Explicit`,
+  enabling trace-time sharding propagation where each op carries a sharding rule.
+- **JAX 0.9.0**: export requires explicit sharding with `NamedSharding`, and the
+  mesh axis names must match between export and execution.
+
+## Pallas, briefly
+
+Higher-order AD is not fully supported. Flash-attention VJPs use `custom_vjp`
+rather than autodiff. Block-size constraints differ by platform: powers of two on
+GPU, divisibility by 8 and 128 on TPU. Expect to write two variants if you target
+both.
+
+## Flags worth knowing exist
+
+Not recommendations — most workloads should leave them alone — but they are hard
+to discover when you need them:
+
+```python
+jax.config.update('jax_exec_time_optimization_effort', 0.5)  # [-1.0, 1.0]
+jax.config.update('jax_memory_fitting_effort', 0.5)
+
+jax.config.update('jax_share_binary_between_hosts', True)    # multi-process compile
+jax.config.update('jax_share_binary_between_hosts_timeout_ms', 300000)
+
+jax.config.update('jax_enable_pgle', True)                   # profile-guided optimisation
+jax.config.update('jax_pgle_profiling_runs', 5)
+```
+
+A persistent compilation cache is also worth configuring early rather than after
+the tenth cold start.
+
+## The pattern
+
+Most of the entries above share a shape: something is silently *reasonable* —
+TF32 by default, CSE enabled, replication when sharding is unspecified,
+normalisation wherever you wrote it — and the cost only becomes visible at scale,
+or in a comparison between two runs that should have matched. The debugging habit
+that helps is not memorising the list; it is being suspicious of the places where
+JAX made a sensible choice on your behalf without saying so.

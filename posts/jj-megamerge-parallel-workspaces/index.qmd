@@ -1,0 +1,167 @@
+---
+title: "A megamerge workflow for parallel work in Jujutsu"
+description: "Several agents editing one repo at once. jj has no built-in notion of \"my set of in-flight branches\" — so build one out of an empty merge commit."
+date: "2026-04-16"
+categories: [jujutsu, version-control, tooling, workflow]
+draft: true
+---
+
+Running several coding agents against one repository at the same time breaks the
+usual branch-per-feature habit quickly. Each agent needs its own working copy,
+none of them may rewrite another's commits, and something has to answer the
+question "what is currently in flight?" — which Jujutsu, for all its strengths,
+has no built-in concept of.
+
+The shape below has held up well. It costs one synthetic commit.
+
+## The graph
+
+```
+        wip (empty merge, no workspace)
+       / | \
+  ws-a@  ws-b@  ws-c@       ← workspace working copies, one per agent
+    |      |      |
+  feat-a feat-b feat-c      ← feature commits
+       \ | /
+        main                ← default workspace, never rebased
+```
+
+Every feature lives in its own workspace under `.workspaces/<name>/`. `wip` is
+an empty terminal merge commit whose *parents* are exactly the set of active
+branch tips. It is never described, never pushed, never landed — it exists only
+so that "my in-flight branches" becomes something you can query.
+
+The default workspace stays parked on `main` and never goes stale:
+
+```sh
+cd <repo-root>
+jj edit main
+```
+
+## Why the empty merge earns its keep
+
+Because `wip`'s parents are the branch set, adding a branch is adding a parent
+and dropping one is removing a parent. That makes a handful of revsets exact
+rather than heuristic:
+
+| Revset | Meaning |
+|---|---|
+| `chain(x)` | Commits on branch `x`, from its root to `x` |
+| `pending()` | All in-flight work: `main..wip` |
+| `my_tip()` | The wip parent connected to `@`, wherever `@` sits in the branch |
+
+The alternative — filtering `jj log` output by description, or keeping a list of
+branch names somewhere — filters on strings you parsed back out of a template.
+These filter on the graph.
+
+A related discipline: never copy a commit hash out of `jj log`. Use `@`, `@-`,
+`my_tip()`, `chain(@)`, `<ws>@`, `trunk()`. Hashes go stale the moment anything
+is rewritten, and under parallel agents things are rewritten constantly.
+
+## The loop
+
+Start a feature:
+
+```sh
+jj workspace add .workspaces/<name> -r main
+cd .workspaces/<name>
+jj wip-add @
+```
+
+Iterate:
+
+```sh
+jj tip-add -m "type(scope): msg"    # new commit at branch tip, wip re-wired atomically
+# edit files...
+jj describe -m "better msg"         # correct the message once the work is done
+jj log -r 'chain(@)'                # just my branch
+jj wip-show                         # main + everything in flight
+```
+
+`tip-add` expands to `new --insert-before wip --insert-after my_tip()`. Plain
+`jj new` or `jj commit` would leave `wip` pointing at the old tip, which quietly
+breaks every revset above. That is the single rule most worth enforcing.
+
+## Two ways to hurt a colleague
+
+**Bare `jj absorb`.** Absorb finds the ancestor each hunk belongs to — and its
+default scope can reach into a sibling branch and rewrite another agent's
+commits, staling their workspace mid-edit. Scope it:
+
+```sh
+jj absorb-here    # absorb --into 'chain(@) ~ @ & mutable()'
+```
+
+Residue left at `@` is then a *signal* that the hunk belongs to someone else's
+branch, not a problem to route around.
+
+**Rebasing everyone on land.** The reflex after landing is to rebase all the
+other branches onto the new `main`. Do that while a peer is editing and their
+workspace goes stale under them. The fix is to skip live workspaces:
+
+```sh
+jj sync    # rebase -s 'roots(pending() ~ ::working_copies())' -d main --skip-emptied
+```
+
+`working_copies()` is the graph's own answer to "what is each workspace sitting
+on". Busy branches then catch up on their own schedule with `jj refresh`
+(`rebase -b @ -d main`), chosen by whoever owns them.
+
+## Landing, in order
+
+Order matters here, and getting it wrong is the most common way to end up
+confused:
+
+```sh
+# inside .workspaces/<name>
+jj refresh                          # rebase my branch onto current main
+jj bookmark set main -r 'my_tip()'  # advance main to my branch tip
+jj wip-detach                       # remove my branch from wip
+
+cd <repo-root>
+jj workspace forget <name>
+rm -rf .workspaces/<name>
+jj wip-clean
+jj sync
+```
+
+`refresh` and `bookmark set` must both run *before* `wip-detach`, because
+`my_tip()` is defined in terms of wip's parents — detach first and it resolves
+to nothing. In a shell like fish, quote the revset: unquoted `my_tip()` is
+command substitution, expands to nothing, and moves the bookmark nowhere while
+reporting no error at all.
+
+Abandoning a feature instead of landing it is the same shape with `jj wip-drop`
+(`abandon -r 'chain(@) ~ main'`) in place of the refresh-and-move.
+
+## Recovery
+
+Every `jj` command snapshots the working copy first, so intermediate states are
+recoverable even when you never committed them:
+
+```sh
+jj workspace list                   # find stale workspaces
+jj workspace update-stale           # reattach @ to the rewritten commit
+jj evolog -r <rev> -p               # every snapshot of a change, with diffs
+jj restore --from <change_id>/<n>   # bring one back
+jj abandon <stale-copy>             # resolve divergence (the * marker)
+jj bookmark set <name> -r <correct> # resolve a bookmark conflict (??)
+jj op log && jj op restore <id>     # rewind the whole repo
+```
+
+`evolog` plus `restore` covers most accidents. `op restore` is for when the
+graph itself is wrong, not the contents.
+
+## The rules that matter
+
+1. `jj tip-add` for every new branch commit — never bare `jj new` or `jj commit`.
+2. `jj absorb-here`, never bare `jj absorb`.
+3. One workspace per feature; the default workspace stays on `main`.
+4. Never `jj edit` a change another workspace has checked out.
+5. Describe before yielding control — an undescribed working copy is how
+   divergent change IDs and bookmark conflicts appear.
+6. Fix `*` and `??` markers immediately, not later.
+
+None of this is specific to agents; it is just that agents make the failure
+modes frequent enough to be worth naming. Two people working in parallel hit the
+same ones, more slowly.

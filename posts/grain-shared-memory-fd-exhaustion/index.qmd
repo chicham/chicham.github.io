@@ -1,0 +1,105 @@
+---
+title: "Too many open files: Grain, shared memory, and the 1024 fd ceiling"
+description: "A 16-worker Grain pipeline dies with Errno 24 — but only when stage timing is on. The fd accounting explains both."
+date: "2026-02-28"
+categories: [jax, grain, data-pipelines, debugging]
+draft: true
+---
+
+A training job with `grain.mp_prefetch`, 16 workers and `batch_size=128` died on
+startup:
+
+```
+OSError: [Errno 24] Too many open files
+```
+
+The default soft limit on the box was 1024. Nothing in the pipeline opens files
+explicitly, so the interesting question is where 1024 descriptors come from —
+and why the same pipeline had run fine the day before.
+
+## Where the descriptors go
+
+Grain's multiprocess prefetch passes data from workers to the parent through
+POSIX shared memory. Every numpy array in a batch element becomes a
+`SharedMemoryArray` backed by `shm_open()`, and each one costs the parent
+process one file descriptor the moment it is opened via
+`SharedMemoryArray.from_metadata()`.
+
+The accumulator is the `batch` node. It calls `next(parent)` `batch_size` times
+and holds every element in a list before yielding a single batch. For the whole
+duration of that window, all the shared-memory segments for all the elements are
+live at once:
+
+| Source | Count |
+|---|---|
+| 128 elements × 5 arrays per element | 640 |
+| Queues, pipes and events for 16 workers | ~183 |
+| Logs, data files, CUDA, Python internals | ~50–100 |
+| **Peak** | **~870–920** |
+
+Just under 1024. The pipeline was not comfortably fine — it was sitting a
+hundred descriptors below the cliff.
+
+The relevant code paths, if you want to read along:
+
+- `grain/_src/python/grain_pool.py:594` — `_open_shared_memory_for_leaf()` → `SharedMemoryArray.from_metadata()` → `shm_open()`, where the descriptor is consumed
+- `grain/_src/python/grain_pool.py:605` — `_open_shared_memory_for_structure()` maps that over every array in an element
+- `grain/_src/python/dataset/transformations/batch.py:230` — `values.append(next(self._parent))`, the accumulation
+- `grain/_src/python/dataset/transformations/prefetch.py:663` — `_stats_in_queues`, 16 spawn `Queue`s at 3 fds each, created unconditionally
+
+## Why enabling stage timing pushed it over
+
+The run that crashed had `ExecutionTrackingMode.STAGE_TIMING` on. That wraps
+every `__next__()` in `_ExecutionStats.record_bytes_consumed()`, which calls
+`jax.tree_util.tree_map(calculate_allocated_bytes, element)`
+(`grain/_src/python/dataset/stats.py:980`).
+
+The traversal costs CPU per element per instrumented node. That slows the
+consumer. A slower consumer means shared-memory segments stay alive longer,
+which means more of them are alive simultaneously — and the peak crosses 1024.
+
+Stage timing did not leak anything. It made the pipeline slow enough for the
+existing headroom to disappear.
+
+The three related knobs behave differently, which is worth knowing before you
+reach for one:
+
+| Config | Effect | fd impact |
+|---|---|---|
+| `grain.config.update("py_debug_mode", True)` | Global: `_ExecutionStats` on every node, plus metrics and logging threads | High; propagates to workers via `debug_flags` |
+| `WithOptionsIterDataset(ds, DatasetOptions(execution_tracking_mode=STAGE_TIMING))` | Per-node timing only | Medium; propagates via `dataset_options` |
+| `grain.config.update("py_dataset_visualization_output_dir", "")` | Logs the pipeline graph to stdout | None |
+| `..._output_dir("/path")` | Raises `NotImplementedError` | n/a |
+
+## The fix
+
+Raise the soft limit at process start:
+
+```python
+import resource
+
+soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+target = min(8192, hard)
+if soft < target:
+    resource.setrlimit(resource.RLIMIT_NOFILE, (target, hard))
+```
+
+This is the fix, not a workaround. A 1024 soft limit is simply the wrong
+setting for a 16-worker shared-memory pipeline that holds an entire batch of
+segments open by design. The hard limit on the machine was 1048576, so there
+was nothing to negotiate.
+
+Two things that look like they should help and do not:
+
+- `SharedMemoryArray.enable_async_del(max_outstanding_requests=50)` targets slow
+  cleanup. The problem is live references during batch accumulation, not
+  cleanup latency.
+- Turning stage timing off buys headroom without fixing the accounting. The
+  next batch-size or worker-count increase puts you back on the cliff.
+
+## What to take from it
+
+When a resource ceiling is hit only under instrumentation, the instrumentation
+is rarely the leak. Work out the steady-state peak first: here it was one
+descriptor per array per in-flight element, times the batch size, and that
+number was already ~90% of the limit before anything was switched on.

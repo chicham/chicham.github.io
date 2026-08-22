@@ -1,6 +1,6 @@
 ---
 title: "Hicham Randrianarivo"
-subtitle: "Principal Research Scientist, Artefact Research Center · Associate Researcher, MICS — CentraleSupélec"
+subtitle: "Principal Research Scientist, Artefact Research Center · Associate Researcher, MICS, CentraleSupélec"
 image: profile.jpg
 about:
   template: trestles
@@ -23,13 +23,6 @@ about:
       href: mailto:hicham.randrianarivo@gmail.com
 ---
 
-I work on **generative retrieval** — training LLMs to index documents by generating semantic IDs — and on detecting when those pipelines make things up.
+I work on information retrieval, document understanding, and large language models. Right now I am mostly interested in generative retrieval: training models to index documents by generating their identifiers.
 
-Previously Huawei Amsterdam (multimodal retrieval for Petal Search) and Qwant (image search at 400 QPS over 15B documents). PhD from CNAM Paris.
-
-## Selected work
-
-- [**artefactual**](software.qmd) — scores how likely an LLM answer is to be a hallucination, from logprobs alone. ECIR 2026.
-- [**LEDGER**](publications.qmd) — long-context benchmark of 4,999 annual reports for grounded financial retrieval. CIKM 2026, Resource Track.
-
-[CV](_files/www/cv_en.pdf) · [Publications](publications.qmd) · [Software](software.qmd) · [Blog](blog.qmd)
+Before Artefact I was at Huawei's Amsterdam Research Center, working on video search for Petal Search, and at Qwant, working on image search. I hold a PhD from CNAM Paris on statistical learning of semantic classes for aerial image interpretation, carried out at ONERA.

@@ -1,0 +1,113 @@
+---
+title: "Why your dataloader workers show up on nvidia-smi"
+description: "N×432 MiB of GPU memory held by CPU-only prefetch workers — sometimes. The spawn start method re-runs your entry module, and one top-level line is enough."
+date: "2026-06-22"
+categories: [jax, grain, multiprocessing, gpu, debugging]
+draft: true
+---
+
+A Grain `mp_prefetch` pipeline with `num_workers=N` behaved three different ways
+on the same code:
+
+1. `nvidia-smi` shows one big training process **plus N workers each holding
+   ~432 MiB**.
+2. The workers do not appear on the GPU at all.
+3. The workers crash at startup with `CUDA_ERROR_OUT_OF_MEMORY`, or
+   `INTERNAL: no supported devices found for platform CUDA`, and the input
+   pipeline starves — 100% GPU utilisation, frozen metrics, zero steps.
+
+The workers are CPU-only prefetchers. They have no business touching the GPU in
+any of these regimes.
+
+## Spawn re-executes your entry module
+
+Grain's workers use the multiprocessing **spawn** start method — a fresh
+interpreter, not a fork. To reconstruct `__main__`, spawn does:
+
+```
+multiprocessing/spawn.py: _fixup_main_from_path()
+  -> runpy.run_path(main_path, run_name="__mp_main__")
+```
+
+It **re-executes the training script's entire module body** in every worker. So
+any eager, module-level GPU initialisation runs once per worker. The canonical
+offender is a line placed at the top of the file deliberately, to claim the
+device early:
+
+```python
+import jax
+jax.devices()   # module top level — this runs in every spawn worker too
+```
+
+## Three regimes, two variables
+
+Which of the three behaviours you get depends on (a) whether the entry module
+initialises the GPU at import, and (b) how much free GPU memory exists at the
+moment each worker starts.
+
+| Regime | Eager module-level GPU init? | Free GPU memory when the worker spawns | Result |
+|---|---|---|---|
+| Reserve | yes | enough headroom | each worker creates a CUDA **context** (~300–450 MiB, observed ~432 MiB) and holds it, uselessly |
+| Crash | yes | not enough — main process resident, large batch, busy node | the worker's `jax.devices()` raises OOM or "no supported devices", the worker dies, the pipeline starves |
+| None | no — init only inside `main()` | irrelevant | workers never touch CUDA; host→device transfer stays in the main process, where it belongs |
+
+The thing that makes this counterintuitive: **a CUDA context is not free even
+with zero allocations.** Creating one reserves a few hundred MiB. In the
+"Reserve" regime nothing is allocated and nothing is computed — the workers are
+simply holding N×~400 MiB of context for a device they never use.
+
+And that is also why the bug is intermittent. The same eager call is harmless at
+small batch and fatal once the main process's activation footprint grows, or
+once the node gets contended, because the worker can no longer find the headroom
+to create its context. It looks like "OOM at larger batch size", which sends you
+off tuning batch size instead of looking at import order.
+
+## The guard that doesn't work
+
+The obvious fix is to detect that you are in a worker and skip the call:
+
+```python
+import multiprocessing
+if multiprocessing.parent_process() is None:   # does NOT work
+    jax.devices()
+```
+
+During `_fixup_main_from_path`, the child's parent reference **is not yet set**.
+Both the worker and the real entry point read as the main process, and the
+worker runs the call anyway. Same for `current_process().name`.
+
+The only signal `runpy` sets synchronously at re-import time is `__name__`,
+which is `"__mp_main__"` in the worker and `"__main__"` in the real entry. You
+could branch on that — but if you are going to restructure anyway, restructure
+properly.
+
+## The fix
+
+Do not initialise the GPU at module scope at all. Keep every device call inside
+`main()`. MaxText's training entry point is a good reference here: it has zero
+top-level `jax.devices()`.
+
+Spawn workers then re-import the module without ever touching CUDA, and JAX
+initialises lazily in the main process when the mesh is built.
+
+Worker count does not change: you still get N CPU-only workers prefetching in
+parallel. They just stop creating a parasitic CUDA context.
+
+## About that "claim the device first" justification
+
+The eager call existed for a reason: to grab JAX's device before a transitive
+`import tensorflow` (pulled in by `keras_hub`) could seize the CUDA context.
+
+That race does not actually happen. With `KERAS_BACKEND=jax`, TensorFlow is
+imported but never runs an op, and TF only grabs the GPU lazily on first op — so
+it never seizes CUDA and there is nothing to race against. Removing the eager
+call was verified, not assumed: a batch-size-64 run that previously stalled ran
+to completion with zero worker CUDA crashes.
+
+Worth checking whether your own version of this line is defending against a race
+that exists. Mine wasn't.
+
+*Related: [the fd-exhaustion post](../grain-shared-memory-fd-exhaustion/) — the
+other multiprocessing-worker gotcha in the same pipeline, and
+[prefetch_to_device under jit](../jax-prefetch-to-device-jit/), which is the same
+principle stated positively: host→device transfer belongs in the main process.*

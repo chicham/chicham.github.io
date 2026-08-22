@@ -1,0 +1,153 @@
+---
+title: "Host RAM that never comes back: orphaned workers and glibc arena bloat"
+description: "A training job climbs from 21GB to 58GB of host memory with no plateau. tracemalloc says nothing is leaking. It is right."
+date: "2026-07-19"
+categories: [jax, grain, memory, debugging, infrastructure]
+draft: true
+---
+
+A training job died with SIGKILL partway through a run: host RAM exhausted. Not
+GPU memory — ordinary system RAM, climbing without bound.
+
+Reproducing it cheaply on a 179M-parameter model, RSS went from 21GB to 58GB
+over about two and a half hours with no sign of levelling off. Unbounded growth,
+not a large-but-fixed working set.
+
+There turned out to be two unrelated causes.
+
+## Cause 1: orphaned dataloader workers
+
+Grain's multiprocess dataloader workers are started with `daemon=True`. That
+only guarantees cleanup on the parent's *normal* interpreter exit, through
+Python's `atexit` machinery. A SIGKILL — from the OOM killer, or from a
+scheduler killing a hung job — bypasses `atexit` entirely.
+
+The workers are then orphaned. They keep running with no parent left to signal
+them, each holding its share of memory.
+
+There were about 19 worker processes still
+resident from a crash *days* earlier, reparented to init (PPID 1). Killing them
+reclaimed 7.15GB.
+
+The fix is to let the kernel do it, since Python-level cleanup can never catch
+SIGKILL:
+
+```python
+import ctypes
+import signal
+
+PR_SET_PDEATHSIG = 1
+
+def die_with_parent():
+    """grain worker_init_fn: have the kernel kill this worker when the parent dies."""
+    ctypes.CDLL("libc.so.6").prctl(PR_SET_PDEATHSIG, signal.SIGKILL)
+```
+
+Wire it in as the `worker_init_fn` of every `mp_prefetch` call. The kernel now
+kills each worker the instant its parent goes away, for any reason.
+
+That closed a real 7GB hole. It was not the main problem.
+
+## Cause 2: glibc malloc arenas
+
+The bigger cause was invisible to every Python-level tool.
+
+I started with `tracemalloc`, bracketing the checkpoint and eval callbacks with
+snapshots — both diffed-since-last and absolute top-N. Its accounting showed
+about 380MB while the process RSS was already past 10GB. A 25–100× gap.
+
+That gap is the finding. `tracemalloc` only sees allocations that go through
+Python's own allocator, so a discrepancy that large means the growth is native,
+below Python entirely. It ruled out a Python leak rather than finding one.
+
+So I went to OS-level tools on the live process:
+
+- `smaps_rollup` showed ~99% private anonymous dirty memory. Nothing
+  file-backed, so no growing `.so` or mapped file.
+- `pmap -x`, sorted by RSS, showed **19 separate anonymous regions over 100MB
+  each** — not one buffer growing without bound, but many mid-sized regions.
+
+That shape is the signature. One growing buffer is a leak; many mid-sized
+anonymous regions is an allocator.
+
+glibc's malloc creates per-thread arenas to reduce lock contention, with a
+default ceiling of `8 × ncpus` when `MALLOC_ARENA_MAX` is unset. On a 224-core
+machine that is **1792 possible arenas**. Each arena is an independent heap that, by
+default, never returns freed memory to the OS once it has grown.
+
+This process had roughly 2466 threads — Grain workers, JAX dispatch and
+execution threads, the checkpointer — all allocating from different threads and
+therefore from different arenas. Memory accumulates across all of them even
+though nothing is leaking in the classic sense. It is allocator-level
+fragmentation, and the application cannot see it.
+
+The fix is one environment variable:
+
+```bash
+export MALLOC_ARENA_MAX=1
+```
+
+## Confirming it properly
+
+The decisive evidence was not that the capped runs used less memory. A lower
+number can come from anywhere.
+
+Three runs: an uncapped control, a capped run with the variable set by hand, and
+a capped run going through the actual deployed launcher path. The control
+climbed 21GB → 58GB+ over an hour with no plateau. Both capped runs plateaued
+around 11–14GB.
+
+The signal that mattered was this: under the arena cap, the transient memory
+bumps from checkpointing and eval were **returned to the OS afterwards** —
+11.83GB dropping back to 10.98GB. That never once happened in the uncapped
+control. Memory going back down is the specific broken behaviour being fixed,
+and it is what separates "we fixed it" from "this run happened to be smaller".
+
+## The false lead, and why it stayed out
+
+I first suspected the checkpoint callback's background-save path. The reasoning
+was plausible: overlapping async saves could let an executor queue capture
+several generations of model and optimizer arrays, and `jax.Array` caches its
+host-side numpy value in `_value`, pinning both the device array and its host
+copy.
+
+I implemented backpressure — wait for the previous save's future before
+capturing the next — and it passed its own unit test.
+
+Then I read Orbax's source. `CheckpointManager.save()` calls
+`wait_until_finished()` at the top, before starting any new save. Orbax already
+serialises saves internally, regardless of the `background_save` setting. The
+fix was correct in isolation and irrelevant in practice.
+
+It was dropped rather than landed. A diff that mixes confirmed causes with
+plausible ones makes the next person's job harder, and a passing unit test for
+a condition that cannot occur is worse than no test.
+
+## The tradeoff
+
+`MALLOC_ARENA_MAX=1` means every thread serialises on a single malloc lock
+instead of getting its own arena. With ~2466 threads that is not a free change.
+
+I have not benchmarked steps/sec before and after. The workload is GPU-compute
+bound rather than malloc bound, so the risk looks low — but that is an
+assumption, not a measurement, and I would rather say so than imply otherwise.
+
+If contention ever shows up, `MALLOC_ARENA_MAX=2` or `4` is the middle ground:
+still collapses the ceiling from 1792 to something small, keeps a little
+parallelism. The more invasive option is replacing the allocator outright —
+jemalloc or tcmalloc via `LD_PRELOAD` — both of which return memory to the OS
+more eagerly and make the workaround unnecessary.
+
+## A playbook
+
+For the next host-memory mystery:
+
+1. **Bracket suspicious callbacks with `tracemalloc`.** A large gap between its
+   total and process RSS is itself the answer: the growth is native.
+2. **`smaps_rollup`** — is it anonymous or file-backed?
+3. **`pmap -x` sorted by RSS** — one growing region, or many mid-sized ones? The
+   second shape means allocator, not leak.
+4. **Correlate region count with core count.** `8 × ncpus` is a number worth
+   recognising on sight.
+5. **A/B on the real workload,** and look for memory being *returned*, not just
+   for a smaller number.
