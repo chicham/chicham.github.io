@@ -33,16 +33,17 @@ a single score, is a prerequisite for deploying any of the above.
 ## Students
 
 **[Alexia Allal](https://fr.linkedin.com/in/alexia-allal)**
-: CIFRE PhD, Artefact and Université d'Angers, since October 2024. Co-supervised
-with Sylvain Lamprier.
+: CIFRE PhD, Artefact and Université d'Angers, since November 2025. Co-supervised
+with [Sylvain Lamprier](https://www.univ-angers.fr/fr/acces-directs/annuaire-2/l/a/uduser-s-lamprier-fr.html).
 *Indexation Générative de Documents par les Modèles de Langage : Mécanismes,
 Robustesse et Passage à l'Échelle.* How documents are encoded into discrete token
 sequences, which construction choices produce the best retrieval, and which
 training-free properties of an identifier space predict downstream quality.
 
-**Vivien Nicolas**
+**[Vivien Nicolas](https://www.linkedin.com/in/vivien-nicolas/)**
 : PhD, IRISA / INSA Rennes, since January 2026. Co-supervised with
-[Caio Corro](https://caio-corro.fr/) and Pascale Sébillot. *Constrained generation
+[Caio Corro](https://caio-corro.fr/) and
+[Pascale Sébillot](https://people.irisa.fr/Pascale.Sebillot/). *Constrained generation
 for retrieval*: enforcing structural validity during decoding through logit
 constraints and attention masking, and what syntactic validity implies about
 semantic validity.

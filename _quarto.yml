@@ -16,8 +16,6 @@ website:
         text: Software
       - href: blog.qmd
         text: Blog
-      - href: about.qmd
-        text: About
     right:
       - icon: github
         href: https://github.com/chicham

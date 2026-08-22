@@ -12,6 +12,9 @@ about:
       href: https://github.com/chicham
     - text: "{{< ai google-scholar >}} Google Scholar"
       href: https://scholar.google.fr/citations?user=g5MloHAAAAAJ&hl
+    - icon: robot
+      text: Hugging Face
+      href: https://huggingface.co/chicham
     - icon: linkedin
       text: LinkedIn
       href: https://linkedin.com/in/hrandria
@@ -23,6 +26,17 @@ about:
       href: mailto:hicham.randrianarivo@gmail.com
 ---
 
-I work on information retrieval, document understanding, and large language models. Right now I am mostly interested in generative retrieval: training models to index documents by generating their identifiers.
+I work on information retrieval, document understanding, and large language models. Right now I am mostly interested in generative retrieval: training models to index documents by generating their identifiers. What I supervise and where the work is going is on the [research](research.qmd) page.
 
-Before Artefact I was at Huawei's Amsterdam Research Center, working on video search for Petal Search, and at Qwant, working on image search. I hold a PhD from CNAM Paris on statistical learning of semantic classes for aerial image interpretation, carried out at ONERA.
+I came to retrieval through images. My PhD at ONERA, awarded by CNAM Paris, was on interpreting aerial imagery: learning semantic classes from mixtures of object detectors so that large satellite archives could be indexed and searched. At Qwant I built and operated an image search engine end to end, and co-developed the SnapEarth satellite search engine. At Huawei's Amsterdam Research Center I moved to video, shipping multimodal retrieval and understanding models into Petal Search.
+
+The through-line is the same question in different modalities: how do you represent a document so that something can find it again. Language models changed the answer, not the question.
+
+Outside of that I care about the engineering underneath research code, which is what the [blog](blog.qmd) is mostly about.
+
+## News
+
+- **Aug 2026.** *LEDGER*, a long-context benchmark of corporate annual reports, accepted at CIKM 2026, Resource Track.
+- **Jan 2026.** Vivien Nicolas starts his PhD at IRISA / INSA Rennes on constrained generation for retrieval.
+- **Dec 2025.** *Learned Hallucination Detection in Black-Box LLMs* accepted at ECIR 2026.
+- **Nov 2025.** Alexia Allal starts her CIFRE PhD with Artefact and Université d'Angers on generative document indexing.
