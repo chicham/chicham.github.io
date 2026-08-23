@@ -64,13 +64,3 @@ rather than by the model it scores. All are trained at `k = 15`.
 
 Both factories also accept a path to a `.skops` file, so a detector you trained yourself
 is named the same way a published one is.
-
-## LEDGER
-
-A benchmark of 4,999 OCR'd corporate annual reports with 31 consolidated financial KPIs
-per company-year, natural-language questions with page-level relevance judgments, and
-market-reaction linkage — built to evaluate retrieval and extraction on genuinely long,
-visually dense documents (median 124 pages, ~126k tokens per report).
-
-[GitHub](https://github.com/artefactory/LEDGER) ·
-[Paper — CIKM 2026 Resource Track (arXiv:2606.13100)](https://arxiv.org/abs/2606.13100)

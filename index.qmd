@@ -10,7 +10,8 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/chicham
-    - text: "{{< ai google-scholar >}} Google Scholar"
+    - icon: mortarboard-fill
+      text: Google Scholar
       href: https://scholar.google.fr/citations?user=g5MloHAAAAAJ&hl
     - icon: robot
       text: Hugging Face
