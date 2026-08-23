@@ -14,13 +14,6 @@
     "text": "Estimating how likely a language model answer is to be a hallucination.\n\nartefactual assigns an already-generated LLM answer a probability of being a hallucination. It reads the answer together with the token probabilities returned alongside it, and needs nothing else from the model — no reference text, no second generation, no access to weights. Any OpenAI-compatible endpoint that exposes logprobs can be scored.\nDocumentation · GitHub · Paper — ECIR 2026 (arXiv:2509.04492) · Detectors on Hugging Face\nfrom openai import OpenAI\nfrom artefactual.scoring import wepr\n\nMODEL = \"mistralai/Ministral-8B-Instruct-2410\"   # the model being scored\nDETECTOR = \"chicham/artefactual-wepr-ministral\"  # the detector trained for it\n\nclient = OpenAI(base_url=\"https://your-provider.example/v1\")\nresponse = client.chat.completions.create(\n    model=MODEL,\n    messages=[{\"role\": \"user\", \"content\": \"Who wrote the Rust book?\"}],\n    logprobs=True,\n    top_logprobs=15,\n)\n\ndetector = wepr(DETECTOR)\ndetector.predict_proba(response)[:, 1]   # P(hallucination) per sequence\ndetector.predict_token_proba(response)   # ...and per token\n\n\nThe example notebooks run against two checked-in responses — no GPU, API key, or model download required.\npip install artefactual\n\n\n\nA detector is trained for one model, so it is named by its own Hugging Face repository rather than by the model it scores. All are trained at k = 15.\n\n\n\n\n\n\n\n\nModel that produced the responses\nepr()\nwepr()\n\n\n\n\nmistralai/Ministral-8B-Instruct-2410\nchicham/artefactual-epr-ministral\nchicham/artefactual-wepr-ministral\n\n\nmistralai/Mistral-Small-3.1-24B-Instruct-2503\nchicham/artefactual-epr-mistral-small\nchicham/artefactual-wepr-mistral-small\n\n\ntiiuae/Falcon3-10B-Instruct\nchicham/artefactual-epr-falcon3\nchicham/artefactual-wepr-falcon3\n\n\nmicrosoft/phi-4\nchicham/artefactual-epr-phi4\nchicham/artefactual-wepr-phi4\n\n\n\nBoth factories also accept a path to a .skops file, so a detector you trained yourself is named the same way a published one is."
   },
   {
-    "objectID": "software.html#ledger",
-    "href": "software.html#ledger",
-    "title": "Software",
-    "section": "LEDGER",
-    "text": "LEDGER\nA benchmark of 4,999 OCR’d corporate annual reports with 31 consolidated financial KPIs per company-year, natural-language questions with page-level relevance judgments, and market-reaction linkage — built to evaluate retrieval and extraction on genuinely long, visually dense documents (median 124 pages, ~126k tokens per report).\nGitHub · Paper — CIKM 2026 Resource Track (arXiv:2606.13100)"
-  },
-  {
     "objectID": "research.html",
     "href": "research.html",
     "title": "Research",
