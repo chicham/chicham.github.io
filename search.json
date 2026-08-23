@@ -1,23 +1,142 @@
 [
   {
+    "objectID": "software.html",
+    "href": "software.html",
+    "title": "Software",
+    "section": "",
+    "text": "Estimating how likely a language model answer is to be a hallucination.\n\nartefactual assigns an already-generated LLM answer a probability of being a hallucination. It reads the answer together with the token probabilities returned alongside it, and needs nothing else from the model — no reference text, no second generation, no access to weights. Any OpenAI-compatible endpoint that exposes logprobs can be scored.\nDocumentation · GitHub · Paper — ECIR 2026 (arXiv:2509.04492) · Detectors on Hugging Face\nfrom openai import OpenAI\nfrom artefactual.scoring import wepr\n\nMODEL = \"mistralai/Ministral-8B-Instruct-2410\"   # the model being scored\nDETECTOR = \"chicham/artefactual-wepr-ministral\"  # the detector trained for it\n\nclient = OpenAI(base_url=\"https://your-provider.example/v1\")\nresponse = client.chat.completions.create(\n    model=MODEL,\n    messages=[{\"role\": \"user\", \"content\": \"Who wrote the Rust book?\"}],\n    logprobs=True,\n    top_logprobs=15,\n)\n\ndetector = wepr(DETECTOR)\ndetector.predict_proba(response)[:, 1]   # P(hallucination) per sequence\ndetector.predict_token_proba(response)   # ...and per token\n\n\nThe example notebooks run against two checked-in responses — no GPU, API key, or model download required.\npip install artefactual\n\n\n\nA detector is trained for one model, so it is named by its own Hugging Face repository rather than by the model it scores. All are trained at k = 15.\n\n\n\n\n\n\n\n\nModel that produced the responses\nepr()\nwepr()\n\n\n\n\nmistralai/Ministral-8B-Instruct-2410\nchicham/artefactual-epr-ministral\nchicham/artefactual-wepr-ministral\n\n\nmistralai/Mistral-Small-3.1-24B-Instruct-2503\nchicham/artefactual-epr-mistral-small\nchicham/artefactual-wepr-mistral-small\n\n\ntiiuae/Falcon3-10B-Instruct\nchicham/artefactual-epr-falcon3\nchicham/artefactual-wepr-falcon3\n\n\nmicrosoft/phi-4\nchicham/artefactual-epr-phi4\nchicham/artefactual-wepr-phi4\n\n\n\nBoth factories also accept a path to a .skops file, so a detector you trained yourself is named the same way a published one is."
+  },
+  {
+    "objectID": "software.html#artefactual",
+    "href": "software.html#artefactual",
+    "title": "Software",
+    "section": "",
+    "text": "Estimating how likely a language model answer is to be a hallucination.\n\nartefactual assigns an already-generated LLM answer a probability of being a hallucination. It reads the answer together with the token probabilities returned alongside it, and needs nothing else from the model — no reference text, no second generation, no access to weights. Any OpenAI-compatible endpoint that exposes logprobs can be scored.\nDocumentation · GitHub · Paper — ECIR 2026 (arXiv:2509.04492) · Detectors on Hugging Face\nfrom openai import OpenAI\nfrom artefactual.scoring import wepr\n\nMODEL = \"mistralai/Ministral-8B-Instruct-2410\"   # the model being scored\nDETECTOR = \"chicham/artefactual-wepr-ministral\"  # the detector trained for it\n\nclient = OpenAI(base_url=\"https://your-provider.example/v1\")\nresponse = client.chat.completions.create(\n    model=MODEL,\n    messages=[{\"role\": \"user\", \"content\": \"Who wrote the Rust book?\"}],\n    logprobs=True,\n    top_logprobs=15,\n)\n\ndetector = wepr(DETECTOR)\ndetector.predict_proba(response)[:, 1]   # P(hallucination) per sequence\ndetector.predict_token_proba(response)   # ...and per token\n\n\nThe example notebooks run against two checked-in responses — no GPU, API key, or model download required.\npip install artefactual\n\n\n\nA detector is trained for one model, so it is named by its own Hugging Face repository rather than by the model it scores. All are trained at k = 15.\n\n\n\n\n\n\n\n\nModel that produced the responses\nepr()\nwepr()\n\n\n\n\nmistralai/Ministral-8B-Instruct-2410\nchicham/artefactual-epr-ministral\nchicham/artefactual-wepr-ministral\n\n\nmistralai/Mistral-Small-3.1-24B-Instruct-2503\nchicham/artefactual-epr-mistral-small\nchicham/artefactual-wepr-mistral-small\n\n\ntiiuae/Falcon3-10B-Instruct\nchicham/artefactual-epr-falcon3\nchicham/artefactual-wepr-falcon3\n\n\nmicrosoft/phi-4\nchicham/artefactual-epr-phi4\nchicham/artefactual-wepr-phi4\n\n\n\nBoth factories also accept a path to a .skops file, so a detector you trained yourself is named the same way a published one is."
+  },
+  {
+    "objectID": "software.html#ledger",
+    "href": "software.html#ledger",
+    "title": "Software",
+    "section": "LEDGER",
+    "text": "LEDGER\nA benchmark of 4,999 OCR’d corporate annual reports with 31 consolidated financial KPIs per company-year, natural-language questions with page-level relevance judgments, and market-reaction linkage — built to evaluate retrieval and extraction on genuinely long, visually dense documents (median 124 pages, ~126k tokens per report).\nGitHub · Paper — CIKM 2026 Resource Track (arXiv:2606.13100)"
+  },
+  {
+    "objectID": "research.html",
+    "href": "research.html",
+    "title": "Research",
+    "section": "",
+    "text": "I work on retrieval with large language models: how documents are represented so a model can find them, and how to tell when the answer built on top of them is wrong."
+  },
+  {
+    "objectID": "research.html#directions",
+    "href": "research.html#directions",
+    "title": "Research",
+    "section": "Directions",
+    "text": "Directions\nGenerative retrieval. Instead of comparing a query embedding against an index, the model generates the identifier of the document it wants. The index lives in the parameters. This removes the separate retrieval structure, and moves the hard problem into how identifiers are constructed and decoded.\nIdentifier spaces. A document identifier is a discrete token sequence, and the way it is built (product quantisation, residual quantisation, hybrids of the two) decides what the model can learn to retrieve. I am interested in properties of an identifier space that predict downstream retrieval quality before training the full model.\nConstrained decoding. Free generation produces identifiers that do not exist. Enforcing structural validity during decoding, through logit constraints and attention masking, keeps generation inside the index, and raises the question of what syntactic validity actually implies about semantic correctness.\nEvaluation and hallucination. Retrieval pipelines fail in ways aggregate metrics hide. Building datasets and protocols that quantify hallucination and retrieval failure, rather than reporting a single score, is a prerequisite for deploying any of the above."
+  },
+  {
+    "objectID": "research.html#students",
+    "href": "research.html#students",
+    "title": "Research",
+    "section": "Students",
+    "text": "Students\n\nAlexia Allal\n\nCIFRE PhD, Artefact and Université d’Angers, since November 2025. Co-supervised with Sylvain Lamprier. Indexation Générative de Documents par les Modèles de Langage : Mécanismes, Robustesse et Passage à l’Échelle. How documents are encoded into discrete token sequences, which construction choices produce the best retrieval, and which training-free properties of an identifier space predict downstream quality.\n\nVivien Nicolas\n\nPhD, IRISA / INSA Rennes, since January 2026. Co-supervised with Caio Corro and Pascale Sébillot. Constrained generation for retrieval: enforcing structural validity during decoding through logit constraints and attention masking, and what syntactic validity implies about semantic validity."
+  },
+  {
+    "objectID": "research.html#before",
+    "href": "research.html#before",
+    "title": "Research",
+    "section": "Before",
+    "text": "Before\nMultimodal and visual retrieval at scale: video search for Petal Search at Huawei’s Amsterdam Research Center, image search at Qwant, and a PhD at ONERA on statistical learning of semantic classes for aerial image interpretation. The CV has the details."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Hicham’s blog",
+    "title": "Hicham Randrianarivo",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nPost With Code\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nNov 20, 2023\n\n\nHarlow Malloc\n\n\n\n\n\n\nNo matching items"
+    "text": "I work on information retrieval, document understanding, and large language models. Right now I am mostly interested in generative retrieval: training models to index documents by generating their identifiers. What I supervise and where the work is going is on the research page.\nI came to retrieval through images. My PhD at ONERA, awarded by CNAM Paris, was on interpreting aerial imagery: learning semantic classes from mixtures of object detectors so that large satellite archives could be indexed and searched. At Qwant I built and operated an image search engine end to end, and co-developed the SnapEarth satellite search engine. At Huawei’s Amsterdam Research Center I moved to video, shipping multimodal retrieval and understanding models into Petal Search.\nThe through-line is the same question in different modalities: how do you represent a document so that something can find it again. Language models changed the answer, not the question.\nOutside of that I care about the engineering underneath research code, which is what the blog is mostly about."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "Hi 👋, My name is Hicham Randrianarivo and I am a Senior Research Engineer at Huawei’s Amesterdam Resarch Center. Previously I was team lead Image Search at Qwant in the Paris office. I talk about my interests about python software engineering, deep learning and computer vision.\nYou can find my full resume here"
+    "objectID": "index.html#news",
+    "href": "index.html#news",
+    "title": "Hicham Randrianarivo",
+    "section": "News",
+    "text": "News\n\nAug 2026. LEDGER, a long-context benchmark of corporate annual reports, accepted at CIKM 2026, Resource Track.\nJan 2026. Vivien Nicolas starts his PhD at IRISA / INSA Rennes on constrained generation for retrieval.\nDec 2025. Learned Hallucination Detection in Black-Box LLMs accepted at ECIR 2026.\nNov 2025. Alexia Allal starts her CIFRE PhD with Artefact and Université d’Angers on generative document indexing."
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
     "section": "",
-    "text": "This is a post with executable code."
+    "text": "No matching items"
+  },
+  {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "Also on Google Scholar. Author names in bold are mine."
+  },
+  {
+    "objectID": "publications.html#section",
+    "href": "publications.html#section",
+    "title": "Publications",
+    "section": "2026",
+    "text": "2026\nCharles Moslonka, Amaury de Vitry, Arthur Garnier, Hicham Randrianarivo, Emmanuel Malherbe. LEDGER: A Long-Context Benchmark of Corporate Annual Reports for Grounded Financial Retrieval and Extraction. CIKM 2026, Resource Track. [arXiv] [code]\nCharles Moslonka, Hicham Randrianarivo, Arthur Garnier, Emmanuel Malherbe. Learned Hallucination Detection in Black-Box LLMs using Token-level Entropy Production Rate. ECIR 2026. [arXiv] [code]"
+  },
+  {
+    "objectID": "publications.html#section-1",
+    "href": "publications.html#section-1",
+    "title": "Publications",
+    "section": "2021",
+    "text": "2021\nChen Dang, Hicham Randrianarivo, Raphaël Fournier-S’Niehotta, Nicolas Audebert. Web Image Context Extraction with Graph Neural Networks and Sentence Embeddings on the DOM tree. ECML-PKDD 3rd Workshop on Graph Embedding and Mining (GEM), 2021. [arXiv]"
+  },
+  {
+    "objectID": "publications.html#section-2",
+    "href": "publications.html#section-2",
+    "title": "Publications",
+    "section": "2020",
+    "text": "2020\nMaxime Portaz, Adrien Nivaggioli, Hicham Randrianarivo, Ilyes Kacher, Sylvain Peyronnet. QISS: An Open Source Image Similarity Search Engine. Advances in Information Retrieval (ECIR), Springer, 2020, p. 486.\nIlyes Kacher, Maxime Portaz, Hicham Randrianarivo, Sylvain Peyronnet. Graphcore C2 Card performance for image-based deep learning application: A Report. arXiv preprint, 2020. [arXiv]"
+  },
+  {
+    "objectID": "publications.html#section-3",
+    "href": "publications.html#section-3",
+    "title": "Publications",
+    "section": "2019",
+    "text": "2019\nAdrien Nivaggioli, Hicham Randrianarivo. Weakly supervised semantic segmentation of satellite images. Joint Urban Remote Sensing Event (JURSE), IEEE, 2019, pp. 1–4. [arXiv]\nMaxime Portaz, Hicham Randrianarivo, Adrien Nivaggioli, Estelle Maudet, Christophe Servan, Sylvain Peyronnet. Image search using multilingual texts: a cross-modal learning approach between image and text. arXiv preprint, 2019. [arXiv]\nBertrand Le Saux, Hicham Randrianarivo, Nicolas Audebert. Christchurch Aerial Semantic Dataset. Dataset, December 2019. [DOI]"
+  },
+  {
+    "objectID": "publications.html#section-4",
+    "href": "publications.html#section-4",
+    "title": "Publications",
+    "section": "2017",
+    "text": "2017\nNicolas Audebert, Alexandre Boulch, Hicham Randrianarivo, Bertrand Le Saux, Marin Ferecatu, Sébastien Lefèvre, Renaud Marlet. Deep learning for urban remote sensing. Joint Urban Remote Sensing Event (JURSE), IEEE, 2017, pp. 1–4."
+  },
+  {
+    "objectID": "publications.html#section-5",
+    "href": "publications.html#section-5",
+    "title": "Publications",
+    "section": "2016",
+    "text": "2016\nHicham Randrianarivo. Apprentissage statistique de classes sémantiques pour l’interprétation d’images aériennes. PhD thesis, Conservatoire national des arts et métiers (CNAM), 2016.\nManuel Campos-Taberner, Adriana Romero-Soriano, Carlo Gatta, Gustau Camps-Valls, Adrien Lagrange, Bertrand Le Saux, Anne Beaupère, Alexandre Boulch, Adrien Chan-Hon-Tong, Stéphane Herbin, Hicham Randrianarivo, et al. Processing of extremely high-resolution Lidar and RGB data: outcome of the 2015 IEEE GRSS data fusion contest – part A: 2-D contest. IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, 9(12), 2016, pp. 5547–5559.\nHicham Randrianarivo, Bertrand Le Saux, Nicolas Audebert, Michel Crucianu, Marin Ferecatu. Structural classifiers for contextual semantic labeling of aerial images. 2016."
+  },
+  {
+    "objectID": "publications.html#section-6",
+    "href": "publications.html#section-6",
+    "title": "Publications",
+    "section": "2015",
+    "text": "2015\nAdrien Lagrange, Bertrand Le Saux, Anne Beaupère, Alexandre Boulch, Adrien Chan-Hon-Tong, Stéphane Herbin, Hicham Randrianarivo, Marin Ferecatu. Benchmarking classification of earth-observation data: From learning explicit features to convolutional networks. IEEE International Geoscience and Remote Sensing Symposium (IGARSS), 2015, pp. 4173–4176.\nHicham Randrianarivo, Bertrand Le Saux, Michel Crucianu, Marin Ferecatu. Discriminatively-trained model mixture for object detection in aerial images. Image Information Mining, Bucharest, Romania, 2015."
+  },
+  {
+    "objectID": "publications.html#section-7",
+    "href": "publications.html#section-7",
+    "title": "Publications",
+    "section": "2014",
+    "text": "2014\nHicham Randrianarivo, Bertrand Le Saux, Marin Ferecatu. Multimodal classification with deformable part-based models for urban cartography. IEEE Geoscience and Remote Sensing Symposium (IGARSS), 2014, pp. 203–206."
+  },
+  {
+    "objectID": "publications.html#section-8",
+    "href": "publications.html#section-8",
+    "title": "Publications",
+    "section": "2013",
+    "text": "2013\nBertrand Le Saux, Hicham Randrianarivo. Urban change detection in SAR images by interactive learning. IEEE International Geoscience and Remote Sensing Symposium (IGARSS), 2013, pp. 3990–3993.\nHicham Randrianarivo, Bertrand Le Saux, Marin Ferecatu. Urban structure detection with deformable part-based models. IEEE International Geoscience and Remote Sensing Symposium (IGARSS), 2013, pp. 200–203."
   }
 ]

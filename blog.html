@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Hicham Randrianarivo</title>
+<title>Blog – Hicham Randrianarivo</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -36,10 +36,13 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
@@ -49,8 +52,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/bootstrap/bootstrap-af5094a0681a62ecabacf4c4aec80bf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="site_libs/bootstrap/bootstrap-dark-60383baa369db6667c77bdca9eedff41.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="site_libs/bootstrap/bootstrap-af5094a0681a62ecabacf4c4aec80bf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/quarto-contrib/academicons-1.9.2/all.css" rel="stylesheet">
-<link href="site_libs/quarto-contrib/academicons-1.9.2/size.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -78,16 +79,71 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-listing .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="Hicham Randrianarivo">
-<meta property="og:description" content="Principal Research Scientist, Artefact Research Center · Associate Researcher, MICS, CentraleSupélec">
-<meta property="og:image" content="https://chicham.github.io/profile.jpg">
+<link rel="alternate" type="application/rss+xml" title="Hicham Randrianarivo" href="blog.xml" data-external="1"><meta property="og:title" content="Blog – Hicham Randrianarivo">
 <meta property="og:site_name" content="Hicham Randrianarivo">
-<meta name="twitter:title" content="Hicham Randrianarivo">
-<meta name="twitter:description" content="Principal Research Scientist, Artefact Research Center · Associate Researcher, MICS, CentraleSupélec">
-<meta name="twitter:image" content="https://chicham.github.io/profile.jpg">
+<meta name="twitter:title" content="Blog – Hicham Randrianarivo">
+<meta name="twitter:image" content="https://chicham.github.io/thumbnail_blog.png">
 <meta name="twitter:creator" content="@chicham">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -272,7 +328,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
@@ -288,7 +344,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Software</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link active" href="./blog.html" aria-current="page"> 
 <span class="menu-text">Blog</span></a>
   </li>  
 </ul>
@@ -321,71 +377,51 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.ipynb" download="index.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(0)</span></div></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="blog.ipynb" download="blog.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></div>
 <!-- main -->
-<div class="quarto-about-trestles">
-  <div class="about-entity">
-    <img src="profile.jpg" class="about-image
-  round " style="height: 14em; width: 14em;">
+<main class="content column-page-left" id="quarto-document-content">
+
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Hicham Randrianarivo</h1>
-<p class="subtitle lead">Principal Research Scientist, Artefact Research Center · Associate Researcher, MICS, CentraleSupélec</p>
+<h1 class="title">Blog</h1>
 </div>
-<div class="quarto-title-meta">
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
   </div>
+  
+
+
 </header>
-    <div class="about-links">
-  <a href="https://github.com/chicham" class="about-link" rel="" target="">
-    <i class="bi bi-github"></i>
-     <span class="about-link-text">GitHub</span>
-  </a>
-  <a href="https://scholar.google.fr/citations?user=g5MloHAAAAAJ&amp;hl" class="about-link" rel="" target="">
-     <span class="about-link-text"><i class="ai  ai-google-scholar"></i> Google Scholar</span>
-  </a>
-  <a href="https://huggingface.co/chicham" class="about-link" rel="" target="">
-    <i class="bi bi-robot"></i>
-     <span class="about-link-text">Hugging Face</span>
-  </a>
-  <a href="https://linkedin.com/in/hrandria" class="about-link" rel="" target="">
-    <i class="bi bi-linkedin"></i>
-     <span class="about-link-text">LinkedIn</span>
-  </a>
-  <a href="/_files/www/cv_en.pdf" class="about-link" rel="" target="">
-    <i class="bi bi-file-earmark-pdf"></i>
-     <span class="about-link-text">CV</span>
-  </a>
-  <a href="mailto:hicham.randrianarivo@gmail.com" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">Email</span>
-  </a>
+
+
+
+
+
+
+<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+<div class="listing-actions-group">
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
 </div>
-  </div>
-  <div class="about-contents"><main class="content" id="quarto-document-content">
+<div class="list quarto-listing-default">
 
-<p>I work on information retrieval, document understanding, and large language models. Right now I am mostly interested in generative retrieval: training models to index documents by generating their identifiers. What I supervise and where the work is going is on the <a href="./research.html">research</a> page.</p>
-<p>I came to retrieval through images. My PhD at ONERA, awarded by CNAM Paris, was on interpreting aerial imagery: learning semantic classes from mixtures of object detectors so that large satellite archives could be indexed and searched. At Qwant I built and operated an image search engine end to end, and co-developed the SnapEarth satellite search engine. At Huawei’s Amsterdam Research Center I moved to video, shipping multimodal retrieval and understanding models into Petal Search.</p>
-<p>The through-line is the same question in different modalities: how do you represent a document so that something can find it again. Language models changed the answer, not the question.</p>
-<p>Outside of that I care about the engineering underneath research code, which is what the <a href="./blog.html">blog</a> is mostly about.</p>
-<section id="news" class="level2">
-<h2 data-anchor-id="news">News</h2>
-<ul>
-<li><strong>Aug 2026.</strong> <em>LEDGER</em>, a long-context benchmark of corporate annual reports, accepted at CIKM 2026, Resource Track.</li>
-<li><strong>Jan 2026.</strong> Vivien Nicolas starts his PhD at IRISA / INSA Rennes on constrained generation for retrieval.</li>
-<li><strong>Dec 2025.</strong> <em>Learned Hallucination Detection in Black-Box LLMs</em> accepted at ECIR 2026.</li>
-<li><strong>Nov 2025.</strong> Alexia Allal starts her CIFRE PhD with Artefact and Université d’Angers on generative document indexing.</li>
-</ul>
-
-
-</section>
-</main></div>
 </div>
- <!-- /main -->
+<div class="listing-no-matching d-none">No matching items</div>
+</div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
@@ -401,6 +437,13 @@ ul.task-list li input[type="checkbox"] {
       window.document.body.appendChild(a);
     }
     setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
     const isCodeAnnotation = (el) => {
       for (const clz of el.classList) {
         if (clz.startsWith('code-annotation-')) {                     
