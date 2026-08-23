@@ -48,9 +48,9 @@ for retrieval*: enforcing structural validity during decoding through logit
 constraints and attention masking, and what syntactic validity implies about
 semantic validity.
 
-## Before
+## Working together
 
-Multimodal and visual retrieval at scale: video search for Petal Search at
-Huawei's Amsterdam Research Center, image search at Qwant, and a PhD at ONERA on
-statistical learning of semantic classes for aerial image interpretation. The
-[CV](_files/www/cv_en.pdf) has the details.
+I am always interested in hearing from prospective PhD students, interns and
+collaborators working on retrieval, document understanding or generative models.
+The best starting point is [an email](mailto:hicham.randrianarivo@gmail.com)
+describing what you want to work on.

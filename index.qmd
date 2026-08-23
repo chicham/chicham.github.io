@@ -10,6 +10,9 @@ about:
     - icon: github
       text: GitHub
       href: https://github.com/chicham
+    - icon: person-vcard
+      text: ORCID
+      href: https://orcid.org/0009-0006-1764-5253
     - icon: mortarboard-fill
       text: Google Scholar
       href: https://scholar.google.fr/citations?user=g5MloHAAAAAJ&hl
@@ -37,7 +40,7 @@ Outside of that I care about the engineering underneath research code, which is 
 
 ## News
 
-- **Aug 2026.** *LEDGER*, a long-context benchmark of corporate annual reports, accepted at CIKM 2026, Resource Track.
-- **Jan 2026.** Vivien Nicolas starts his PhD at IRISA / INSA Rennes on constrained generation for retrieval.
-- **Dec 2025.** *Learned Hallucination Detection in Black-Box LLMs* accepted at ECIR 2026.
-- **Nov 2025.** Alexia Allal starts her CIFRE PhD with Artefact and Université d'Angers on generative document indexing.
+- **Aug 2026** *LEDGER*, a long-context benchmark of corporate annual reports, accepted at CIKM 2026, Resource Track.
+- **Jan 2026** Vivien Nicolas starts his PhD at IRISA / INSA Rennes on constrained generation for retrieval.
+- **Dec 2025** *Learned Hallucination Detection in Black-Box LLMs* accepted at ECIR 2026.
+- **Nov 2025** Alexia Allal starts her CIFRE PhD with Artefact and Université d'Angers on generative document indexing.

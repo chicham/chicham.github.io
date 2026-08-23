@@ -12,13 +12,13 @@ toc-location: right
 
 `artefactual` assigns an already-generated LLM answer a probability of being a
 hallucination. It reads the answer together with the token probabilities returned
-alongside it, and needs nothing else from the model — no reference text, no second
+alongside it, and needs nothing else from the model: no reference text, no second
 generation, no access to weights. Any OpenAI-compatible endpoint that exposes
 `logprobs` can be scored.
 
 [Documentation](https://artefactory.github.io/artefactual/) ·
 [GitHub](https://github.com/artefactory/artefactual) ·
-[Paper — ECIR 2026 (arXiv:2509.04492)](https://arxiv.org/abs/2509.04492) ·
+[Paper, ECIR 2026 (arXiv:2509.04492)](https://arxiv.org/abs/2509.04492) ·
 [Detectors on Hugging Face](https://huggingface.co/chicham)
 
 ```python
@@ -44,7 +44,7 @@ detector.predict_token_proba(response)   # ...and per token
 ### Try it without an endpoint
 
 The [example notebooks](https://artefactory.github.io/artefactual/examples/) run against
-two checked-in responses — no GPU, API key, or model download required.
+two checked-in responses: no GPU, API key, or model download required.
 
 ```bash
 pip install artefactual
@@ -64,3 +64,16 @@ rather than by the model it scores. All are trained at `k = 15`.
 
 Both factories also accept a path to a `.skops` file, so a detector you trained yourself
 is named the same way a published one is.
+
+## Datasets
+
+**[Christchurch Aerial Semantic Dataset](https://doi.org/10.5281/zenodo.3566005)**
+: Aerial imagery of Christchurch, New Zealand with dense semantic labels, released
+for benchmarking segmentation and retrieval on Earth observation data. With Bertrand
+Le Saux and Nicolas Audebert.
+
+**[LEDGER](https://github.com/artefactory/LEDGER)**
+: 4,999 OCR'd corporate annual reports with 31 consolidated financial KPIs per
+company-year, natural-language questions with page-level relevance judgments, and
+market-reaction linkage. Median 124 pages per report. Built to evaluate retrieval
+and extraction on genuinely long, visually dense documents.

@@ -1,5 +1,8 @@
 project:
   type: website
+  pre-render: python3 scripts/bib2md.py
+  resources:
+    - publications.bib
 website:
   title: "Hicham Randrianarivo"
   site-url: https://chicham.github.io
@@ -35,8 +38,8 @@ website:
 format:
   html:
     theme:
-      light: flatly
-      dark: darkly
+      light: [flatly, theme-light.scss]
+      dark: [darkly, theme-dark.scss]
     css: styles.css
     resources:
       - _files
