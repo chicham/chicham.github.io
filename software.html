@@ -82,9 +82,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-af5094a0681a62ecabacf4c4aec80bf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-60383baa369db6667c77bdca9eedff41.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-af5094a0681a62ecabacf4c4aec80bf2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-48d6300d9f73465b1d1d0e913cea9486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-7f8f4ee274f1f55758add490942e736e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-48d6300d9f73465b1d1d0e913cea9486.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -367,6 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#try-it-without-an-endpoint" id="toc-try-it-without-an-endpoint" class="nav-link" data-scroll-target="#try-it-without-an-endpoint">Try it without an endpoint</a></li>
   <li><a href="#published-detectors" id="toc-published-detectors" class="nav-link" data-scroll-target="#published-detectors">Published detectors</a></li>
   </ul></li>
+  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Datasets</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="software.ipynb" download="software.ipynb"><i class="bi bi-journal-code"></i>Jupyter</a></li></ul></div></nav>
     </div>
@@ -397,8 +398,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="artefactual">artefactual</h2>
 <p><strong>Estimating how likely a language model answer is to be a hallucination.</strong></p>
 <p><a href="https://github.com/artefactory/artefactual"><img src="https://img.shields.io/github/stars/artefactory/artefactual?style=social.png" class="img-fluid"></a></p>
-<p><code>artefactual</code> assigns an already-generated LLM answer a probability of being a hallucination. It reads the answer together with the token probabilities returned alongside it, and needs nothing else from the model — no reference text, no second generation, no access to weights. Any OpenAI-compatible endpoint that exposes <code>logprobs</code> can be scored.</p>
-<p><a href="https://artefactory.github.io/artefactual/">Documentation</a> · <a href="https://github.com/artefactory/artefactual">GitHub</a> · <a href="https://arxiv.org/abs/2509.04492">Paper — ECIR 2026 (arXiv:2509.04492)</a> · <a href="https://huggingface.co/chicham">Detectors on Hugging Face</a></p>
+<p><code>artefactual</code> assigns an already-generated LLM answer a probability of being a hallucination. It reads the answer together with the token probabilities returned alongside it, and needs nothing else from the model: no reference text, no second generation, no access to weights. Any OpenAI-compatible endpoint that exposes <code>logprobs</code> can be scored.</p>
+<p><a href="https://artefactory.github.io/artefactual/">Documentation</a> · <a href="https://github.com/artefactory/artefactual">GitHub</a> · <a href="https://arxiv.org/abs/2509.04492">Paper, ECIR 2026 (arXiv:2509.04492)</a> · <a href="https://huggingface.co/chicham">Detectors on Hugging Face</a></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> artefactual.scoring <span class="im">import</span> wepr</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -418,7 +419,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>detector.predict_token_proba(response)   <span class="co"># ...and per token</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <section id="try-it-without-an-endpoint" class="level3">
 <h3 class="anchored" data-anchor-id="try-it-without-an-endpoint">Try it without an endpoint</h3>
-<p>The <a href="https://artefactory.github.io/artefactual/examples/">example notebooks</a> run against two checked-in responses — no GPU, API key, or model download required.</p>
+<p>The <a href="https://artefactory.github.io/artefactual/examples/">example notebooks</a> run against two checked-in responses: no GPU, API key, or model download required.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install artefactual</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="published-detectors" class="level3">
@@ -461,9 +462,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 <p>Both factories also accept a path to a <code>.skops</code> file, so a detector you trained yourself is named the same way a published one is.</p>
-
-
 </section>
+</section>
+<section id="datasets" class="level2">
+<h2 class="anchored" data-anchor-id="datasets">Datasets</h2>
+<dl>
+<dt><strong><a href="https://doi.org/10.5281/zenodo.3566005">Christchurch Aerial Semantic Dataset</a></strong></dt>
+<dd>
+Aerial imagery of Christchurch, New Zealand with dense semantic labels, released for benchmarking segmentation and retrieval on Earth observation data. With Bertrand Le Saux and Nicolas Audebert.
+</dd>
+<dt><strong><a href="https://github.com/artefactory/LEDGER">LEDGER</a></strong></dt>
+<dd>
+4,999 OCR’d corporate annual reports with 31 consolidated financial KPIs per company-year, natural-language questions with page-level relevance judgments, and market-reaction linkage. Median 124 pages per report. Built to evaluate retrieval and extraction on genuinely long, visually dense documents.
+</dd>
+</dl>
+
+
 </section>
 
 </main> <!-- /main -->
