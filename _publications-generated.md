@@ -7,7 +7,7 @@
 
 [Charles Moslonka, **Hicham Randrianarivo**, Arthur Garnier, Emmanuel Malherbe]{.pub-authors}
 
-[Accepted at ECIR 2026]{.pub-venue} [arXiv](https://arxiv.org/abs/2509.04492){.pub-link} [code](https://github.com/artefactory/artefactual){.pub-link}
+[Published as: Advances in Information Retrieval – 48th ECIR 2026, Part I, LNCS 16483, pp. 115–130]{.pub-venue} [arXiv](https://arxiv.org/abs/2509.04492){.pub-link} [code](https://github.com/artefactory/artefactual){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -20,7 +20,7 @@
       archivePrefix={arXiv},
       primaryClass={cs.CL},
       url={https://arxiv.org/abs/2509.04492},
-      note={Accepted at ECIR 2026},
+      note={Published as: Advances in Information Retrieval -- 48th ECIR 2026, Part I, LNCS 16483, pp. 115--130},
       sortyear={2026},
       code={https://github.com/artefactory/artefactual}
 }
@@ -62,16 +62,21 @@
 
 [Chen Dang, **Hicham Randrianarivo**, Raphaël Fournier-S'Niehotta, Nicolas Audebert]{.pub-authors}
 
-[ECML-PKDD 3rd Workshop on Graph Embedding and Mining (GEM)]{.pub-venue} [arXiv](https://arxiv.org/abs/2108.11629){.pub-link}
+[ECML-PKDD 3rd Workshop on Graph Embedding and Mining (GEM)]{.pub-venue} [arXiv](https://arxiv.org/abs/2108.11629){.pub-link} [DOI](https://doi.org/10.1007/978-3-030-93736-2_20){.pub-link}
 
 <details><summary>BibTeX</summary>
 
 ``` bibtex
-@article{dang2021web,
+@inproceedings{dang2021web,
   title={Web Image Context Extraction with Graph Neural Networks and Sentence Embeddings on the DOM tree},
   author={Dang, Chen and Randrianarivo, Hicham and Fournier-S'Niehotta, Rapha{\"e}l and Audebert, Nicolas},
-  journal={Joint European Conference on Machine Learning and Knowledge Discovery in Databases 3rd Workshop on Graph Embedding and Mining},
+  booktitle={Machine Learning and Principles and Practice of Knowledge Discovery in Databases: International Workshops of ECML PKDD 2021},
+  series={Communications in Computer and Information Science},
+  volume={1524},
+  pages={258--267},
+  publisher={Springer},
   year={2021},
+  doi={10.1007/978-3-030-93736-2_20},
   eprint={2108.11629},
   archivePrefix={arXiv},
   url={https://arxiv.org/abs/2108.11629},
@@ -95,7 +100,7 @@
 
 ``` bibtex
 @misc{kacher2020graphcore,
-      title={Graphcore C2 Card performance for image-based deep learning application: A Report}, 
+      title={Graphcore C2 Card performance for image-based deep learning application: A Report},
       author={Ilyes Kacher and Maxime Portaz and Hicham Randrianarivo and Sylvain Peyronnet},
       year={2020},
       eprint={2002.11670},
@@ -113,7 +118,7 @@
 
 [Maxime Portaz, Adrien Nivaggioli, **Hicham Randrianarivo**, Ilyes Kacher, Sylvain Peyronnet]{.pub-authors}
 
-[Advances in Information Retrieval, Springer International Publishing, 2020, p. 486]{.pub-venue}
+[Advances in Information Retrieval, Springer International Publishing, 12036, 2020, pp. 486–490]{.pub-venue} [DOI](https://doi.org/10.1007/978-3-030-45442-5_63){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -121,10 +126,15 @@
 @inproceedings{portaz2020qiss,
   title={QISS: An Open Source Image Similarity Search Engine},
   author={Portaz, Maxime and Nivaggioli, Adrien and Randrianarivo, Hicham and Kacher, Ilyes and Peyronnet, Sylvain},
-  pages={486},
+  booktitle={Advances in Information Retrieval},
+  series={Lecture Notes in Computer Science},
+  volume={12036},
+  address={Lisbon, Portugal},
+  month=apr,
+  pages={486--490},
   year={2020},
-  publisher="Springer International Publishing",
-  booktitle="Advances in Information Retrieval",
+  publisher={Springer International Publishing},
+  doi={10.1007/978-3-030-45442-5_63}
 }
 ```
 
@@ -187,7 +197,7 @@
 
 [Adrien Nivaggioli, **Hicham Randrianarivo**]{.pub-authors}
 
-[2019 Joint urban remote sensing event (JURSE), IEEE, 2019, pp. 1–4]{.pub-venue} [arXiv](https://arxiv.org/abs/1904.03983){.pub-link}
+[2019 Joint urban remote sensing event (JURSE), IEEE, 2019, pp. 1–4]{.pub-venue} [arXiv](https://arxiv.org/abs/1904.03983){.pub-link} [DOI](https://doi.org/10.1109/JURSE.2019.8809060){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -196,9 +206,12 @@
   title={Weakly supervised semantic segmentation of satellite images},
   author={Nivaggioli, Adrien and Randrianarivo, Hicham},
   booktitle={2019 Joint urban remote sensing event (JURSE)},
+  address={Vannes, France},
+  month=may,
   pages={1--4},
   year={2019},
   organization={IEEE},
+  doi={10.1109/JURSE.2019.8809060},
   eprint={1904.03983},
   archivePrefix={arXiv},
   url={https://arxiv.org/abs/1904.03983}
@@ -215,7 +228,7 @@
 
 [Nicolas Audebert, Alexandre Boulch, **Hicham Randrianarivo**, Bertrand Le Saux, Marin Ferecatu, Sébastien Lefèvre, Renaud Marlet]{.pub-authors}
 
-[2017 Joint Urban Remote Sensing Event (JURSE), IEEE, 2017, pp. 1–4]{.pub-venue}
+[2017 Joint Urban Remote Sensing Event (JURSE), IEEE, 2017, pp. 1–4]{.pub-venue} [DOI](https://doi.org/10.1109/JURSE.2017.7924536){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -224,9 +237,12 @@
   title={Deep learning for urban remote sensing},
   author={Audebert, Nicolas and Boulch, Alexandre and Randrianarivo, Hicham and Le Saux, Bertrand and Ferecatu, Marin and Lef{\`e}vre, S{\'e}bastien and Marlet, Renaud},
   booktitle={2017 Joint Urban Remote Sensing Event (JURSE)},
+  address={Dubai, UAE},
+  month=mar,
   pages={1--4},
   year={2017},
-  organization={IEEE}
+  organization={IEEE},
+  doi={10.1109/JURSE.2017.7924536}
 }
 ```
 
@@ -240,7 +256,7 @@
 
 [**Hicham Randrianarivo**]{.pub-authors}
 
-[PhD thesis, Conservatoire national des arts et metiers-CNAM, 2016]{.pub-venue}
+[PhD thesis, Conservatoire national des arts et métiers, Paris, France, 2016]{.pub-venue}
 
 <details><summary>BibTeX</summary>
 
@@ -249,8 +265,9 @@
   title={Apprentissage statistique de classes s{\'e}mantiques pour l'interpr{\'e}tation d'images a{\'e}riennes},
   author={Randrianarivo, Hicham},
   year={2016},
-  school={Conservatoire national des arts et metiers-CNAM},
-  note={PhD thesis}
+  school={Conservatoire national des arts et m{\'e}tiers, Paris, France},
+  note={PhD thesis},
+  url={https://tel.archives-ouvertes.fr/tel-01482119}
 }
 ```
 
@@ -262,7 +279,7 @@
 
 [Manuel Campos-Taberner, Adriana Romero-Soriano, Carlo Gatta, Gustau Camps-Valls, Adrien Lagrange, Bertrand Le Saux, Anne Beaupère, Alexandre Boulch, Adrien Chan-Hon-Tong, Stéphane Herbin, et al]{.pub-authors}
 
-[IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, 9(12), 2016, pp. 5547–5559]{.pub-venue}
+[IEEE Journal of Selected Topics in Applied Earth Observations and Remote Sensing, 9(12), 2016, pp. 5547–5559]{.pub-venue} [DOI](https://doi.org/10.1109/JSTARS.2016.2569162){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -275,6 +292,7 @@
   number={12},
   pages={5547--5559},
   year={2016},
+  doi={10.1109/JSTARS.2016.2569162}
 }
 ```
 
@@ -286,7 +304,7 @@
 
 [**Hicham Randrianarivo**, Bertrand Le Saux, Nicolas Audebert, Michel Crucianu, Marin Ferecatu]{.pub-authors}
 
-[2016]{.pub-venue}
+[ESA Big Data from Space (BiDS'16), 2016]{.pub-venue}
 
 <details><summary>BibTeX</summary>
 
@@ -294,6 +312,9 @@
 @inproceedings{randrianarivo2016structural,
   title={Structural classifiers for contextual semantic labeling of aerial images},
   author={Randrianarivo, Hicham and Le Saux, Bertrand and Audebert, Nicolas and Crucianu, Michel and Ferecatu, Marin},
+  booktitle={ESA Big Data from Space (BiDS'16)},
+  address={Santa Cruz de Tenerife, Spain},
+  month=mar,
   year={2016}
 }
 ```
@@ -308,7 +329,7 @@
 
 [Adrien Lagrange, Bertrand Le Saux, Anne Beaupère, Alexandre Boulch, Adrien Chan-Hon-Tong, Stéphane Herbin, **Hicham Randrianarivo**, Marin Ferecatu]{.pub-authors}
 
-[2015 IEEE International Geoscience and Remote Sensing Symposium (IGARSS), IEEE, 2015, pp. 4173–4176]{.pub-venue}
+[2015 IEEE International Geoscience and Remote Sensing Symposium (IGARSS), IEEE, 2015, pp. 4173–4176]{.pub-venue} [DOI](https://doi.org/10.1109/IGARSS.2015.7326745){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -317,9 +338,12 @@
   title={Benchmarking classification of earth-observation data: From learning explicit features to convolutional networks},
   author={Lagrange, Adrien and Le Saux, Bertrand and Beaup{\`e}re, Anne and Boulch, Alexandre and Chan-Hon-Tong, Adrien and Herbin, St{\'e}phane and Randrianarivo, Hicham and Ferecatu, Marin},
   booktitle={2015 IEEE International Geoscience and Remote Sensing Symposium (IGARSS)},
+  address={Milan, Italy},
+  month=jul,
   pages={4173--4176},
   year={2015},
-  organization={IEEE}
+  organization={IEEE},
+  doi={10.1109/IGARSS.2015.7326745}
 }
 ```
 
@@ -340,7 +364,33 @@
   title={Discriminatively-trained model mixture for object detection in aerial images},
   author={Randrianarivo, Hicham and Le Saux, Bertrand and Crucianu, Michel and Ferecatu, Marin},
   journal={Image Information Mining, Bucharest, Romania},
+  address={Bucharest, Romania},
+  month=oct,
   year={2015}
+}
+```
+
+</details>
+:::
+
+::: {.pub}
+[Détection de véhicules en imagerie aérienne par mélange de modèles discriminatifs]{.pub-title}
+
+[**Hicham Randrianarivo**, Bertrand Le Saux, Marin Ferecatu]{.pub-authors}
+
+[25e Colloque GRETSI, 2015]{.pub-venue}
+
+<details><summary>BibTeX</summary>
+
+``` bibtex
+@inproceedings{randrianarivo2015vehicules,
+  title={D{\'e}tection de v{\'e}hicules en imagerie a{\'e}rienne par m{\'e}lange de mod{\`e}les discriminatifs},
+  author={Randrianarivo, Hicham and Le Saux, Bertrand and Ferecatu, Marin},
+  booktitle={25e Colloque GRETSI},
+  address={Lyon, France},
+  month=sep,
+  year={2015},
+  url={https://www.gretsi.fr/data/colloque/pdf/2015_lesaux74.pdf}
 }
 ```
 
@@ -354,7 +404,7 @@
 
 [**Hicham Randrianarivo**, Bertrand Le Saux, Marin Ferecatu]{.pub-authors}
 
-[2014 IEEE Geoscience and Remote Sensing Symposium, IEEE, 2014, pp. 203–206]{.pub-venue}
+[2014 IEEE Geoscience and Remote Sensing Symposium, IEEE, 2014, pp. 203–206]{.pub-venue} [DOI](https://doi.org/10.1109/IGARSS.2014.6946392){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -363,9 +413,12 @@
   title={Multimodal classification with deformable part-based models for urban cartography},
   author={Randrianarivo, Hicham and Le Saux, Bertrand and Ferecatu, Marin},
   booktitle={2014 IEEE Geoscience and Remote Sensing Symposium},
+  address={Quebec City, QC, Canada},
+  month=jul,
   pages={203--206},
   year={2014},
-  organization={IEEE}
+  organization={IEEE},
+  doi={10.1109/IGARSS.2014.6946392}
 }
 ```
 
@@ -379,7 +432,7 @@
 
 [Bertrand Le Saux, **Hicham Randrianarivo**]{.pub-authors}
 
-[2013 IEEE International Geoscience and Remote Sensing Symposium-IGARSS, IEEE, 2013, pp. 3990–3993]{.pub-venue}
+[2013 IEEE International Geoscience and Remote Sensing Symposium-IGARSS, IEEE, 2013, pp. 3990–3993]{.pub-venue} [DOI](https://doi.org/10.1109/IGARSS.2013.6723707){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -388,9 +441,12 @@
   title={Urban change detection in SAR images by interactive learning},
   author={Le Saux, Bertrand and Randrianarivo, Hicham},
   booktitle={2013 IEEE International Geoscience and Remote Sensing Symposium-IGARSS},
+  address={Melbourne, Australia},
+  month=jul,
   pages={3990--3993},
   year={2013},
-  organization={IEEE}
+  organization={IEEE},
+  doi={10.1109/IGARSS.2013.6723707}
 }
 ```
 
@@ -402,7 +458,7 @@
 
 [**Hicham Randrianarivo**, Bertrand Le Saux, Marin Ferecatu]{.pub-authors}
 
-[2013 IEEE International Geoscience and Remote Sensing Symposium-IGARSS, IEEE, 2013, pp. 200–203]{.pub-venue}
+[2013 IEEE International Geoscience and Remote Sensing Symposium-IGARSS, IEEE, 2013, pp. 200–203]{.pub-venue} [DOI](https://doi.org/10.1109/IGARSS.2013.6721126){.pub-link}
 
 <details><summary>BibTeX</summary>
 
@@ -411,9 +467,12 @@
   title={Urban structure detection with deformable part-based models},
   author={Randrianarivo, Hicham and Le Saux, Bertrand and Ferecatu, Marin},
   booktitle={2013 IEEE International Geoscience and Remote Sensing Symposium-IGARSS},
+  address={Melbourne, Australia},
+  month=jul,
   pages={200--203},
   year={2013},
-  organization={IEEE}
+  organization={IEEE},
+  doi={10.1109/IGARSS.2013.6721126}
 }
 ```
 
